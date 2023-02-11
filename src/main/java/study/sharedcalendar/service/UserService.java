@@ -10,9 +10,13 @@ import study.sharedcalendar.mapper.UserMapper;
 public class UserService {
     private final UserMapper userMapper;
 
-    public int signUp(User user) {
-        int result = userMapper.createUser(user);
-        return result;
+    public boolean signUp(User user) {
+        int isCheckedId = userMapper.idCheck(user.getUserId());
+        if( isCheckedId == 0 ) {
+            userMapper.createUser(user);
+            return true;
+        }
+        else return false;
     }
 
     public int idCheck(String userId) {

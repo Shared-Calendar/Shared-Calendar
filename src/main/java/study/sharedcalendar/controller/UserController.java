@@ -13,8 +13,9 @@ public class UserController {
 
     @PostMapping("")
     public String signUp(@RequestBody User user) {
-        userService.signUp(user);
-        return "ok";
+        if( userService.signUp(user))
+            return "ok";
+        else return "존재하는 아이디입니다.";
     }
 
     @GetMapping("")
