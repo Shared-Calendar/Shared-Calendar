@@ -13,16 +13,8 @@ public class UserController {
 
     @PostMapping("")
     public String signUp(@RequestBody User user) {
-        if( userService.signUp(user))
-            return "ok";
-        else return "존재하는 아이디입니다.";
-    }
-
-    @GetMapping("")
-    public String idCheck(@RequestParam String userId) {
-        int result = userService.idCheck(userId);
-        if( result == 0 ) return "ok";
-        else return "존재하는 아이디입니다.";
+        userService.signUp(user);
+        return "ok";
     }
 
 

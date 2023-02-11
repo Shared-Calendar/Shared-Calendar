@@ -9,5 +9,4 @@ public interface UserMapper {
 
     int createUser(User user);
 
-    int idCheck(String userId);
 }
