@@ -20,7 +20,13 @@
                  1,
                  NOW(),
                  NOW()
-                        );
+        );
     </insert>
+
+    <select id="idCheck" resultType="Integer">
+        SELECT COUNT(*)
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
 
 </mapper>

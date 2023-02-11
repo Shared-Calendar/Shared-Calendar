@@ -17,5 +17,12 @@ public class UserController {
         return "ok";
     }
 
+    @GetMapping("")
+    public String idCheck(@RequestParam String userId) {
+        int result = userService.idCheck(userId);
+        if( result == 0 ) return "ok";
+        else return "존재하는 아이디입니다.";
+    }
+
 
 }

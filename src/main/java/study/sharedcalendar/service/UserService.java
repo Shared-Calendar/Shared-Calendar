@@ -14,4 +14,9 @@ public class UserService {
         int result = userMapper.createUser(user);
         return result;
     }
+
+    public int idCheck(String userId) {
+        int result = userMapper.idCheck(userId);
+        return result;
+    }
 }
