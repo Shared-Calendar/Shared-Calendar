@@ -12,10 +12,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("")
-    public String signUp(@RequestBody User user) {
+    public void signUp(@RequestBody User user) {
         userService.signUp(user);
-        return "ok";
     }
-
-
 }

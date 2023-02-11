@@ -10,8 +10,7 @@ import study.sharedcalendar.mapper.UserMapper;
 public class UserService {
     private final UserMapper userMapper;
 
-    public int signUp(User user) {
-        int result = userMapper.createUser(user);
-        return result;
+    public void signUp(User user) {
+        userMapper.createUser(user);
     }
 }

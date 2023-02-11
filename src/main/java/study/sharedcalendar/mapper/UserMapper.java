@@ -5,8 +5,5 @@ import study.sharedcalendar.dto.User;
 
 @Mapper
 public interface UserMapper {
-
-
     int createUser(User user);
-
 }
