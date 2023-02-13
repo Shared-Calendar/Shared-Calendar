@@ -14,20 +14,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity signUp(@RequestBody User user) {
-        if (userService.signUp(user)) {
-            return new ResponseEntity(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(HttpStatus.CONFLICT);
-        }
+    public void signUp(@RequestBody User user) {
+        userService.signUp(user);
     }
 
     @GetMapping
-    public ResponseEntity idCheck(@RequestParam String userId) {
-        if (userService.idCheck(userId)) {
-            return new ResponseEntity(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(HttpStatus.CONFLICT);
-        }
+    public void idCheck(@RequestParam String userId) {
+        userService.idCheck(userId);
     }
 }

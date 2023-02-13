@@ -1,29 +1,31 @@
 package study.sharedcalendar.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jmx.access.InvalidInvocationException;
 import org.springframework.stereotype.Service;
+import study.constant.ErrorCode;
 import study.sharedcalendar.dto.User;
+import study.sharedcalendar.exception.CustomException;
 import study.sharedcalendar.mapper.UserMapper;
+
+import static study.constant.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserMapper userMapper;
 
-    public boolean signUp(User user) {
-        if (idCheck(user.getUserId())) {
+    public void signUp(User user) {
+        idCheck(user.getUserId());
+        try {
             userMapper.createUser(user);
-            return true;
-        }
-        else {
-            return false;
+        } catch (Exception e) {
+            throw new CustomException(INTERNAL_SERVER_ERROR);
         }
     }
 
-    public boolean idCheck(String userId) {
-        if (userMapper.idCheck(userId) == 0)
-            return true;
-        else
-            return false;
+    public void idCheck(String userId) {
+        if (userMapper.idCheck(userId) != 0)
+            throw new CustomException(ID_DUPLICATE);
     }
 }
