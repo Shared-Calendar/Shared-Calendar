@@ -1,9 +1,7 @@
 package study.sharedcalendar.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jmx.access.InvalidInvocationException;
 import org.springframework.stereotype.Service;
-import study.constant.ErrorCode;
 import study.sharedcalendar.dto.User;
 import study.sharedcalendar.exception.CustomException;
 import study.sharedcalendar.mapper.UserMapper;
@@ -17,6 +15,7 @@ public class UserService {
 
     public void signUp(User user) {
         idCheck(user.getUserId());
+
         try {
             userMapper.createUser(user);
         } catch (Exception e) {
