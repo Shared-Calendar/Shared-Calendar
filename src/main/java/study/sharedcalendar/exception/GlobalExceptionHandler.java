@@ -10,6 +10,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateException.class)
     protected ResponseEntity handleDuplicateException(DuplicateException ex) {
-        return ResponseEntity.status(ex.getErrorCode().getStatus()).body(new ErrorResponse(ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage()));
+        return ResponseEntity
+                .status(ex.getErrorCode().getStatus())
+                .body(new ErrorResponse(ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage()));
     }
 }

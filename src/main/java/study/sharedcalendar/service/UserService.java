@@ -14,13 +14,13 @@ public class UserService {
     private final UserMapper userMapper;
 
     public void signUp(User user) {
-        if (idExist(user.getUserId()))
+        if (userIdExist(user.getUserId()))
             throw new DuplicateException(ID_DUPLICATE);
         else
             userMapper.createUser(user);
     }
 
-    public boolean idExist(String userId) {
-        return userMapper.idExist(userId);
+    public boolean userIdExist(String userId) {
+        return userMapper.userIdExist(userId);
     }
 }

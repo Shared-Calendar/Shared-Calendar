@@ -20,7 +20,7 @@
                 NOW());
     </insert>
 
-    <select id="idExist" resultType="boolean">
+    <select id="userIdExist" resultType="boolean">
         SELECT EXISTS(
                        SELECT *
                        FROM user

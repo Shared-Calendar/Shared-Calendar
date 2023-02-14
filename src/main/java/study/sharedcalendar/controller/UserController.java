@@ -15,13 +15,12 @@ public class UserController {
 
     @PostMapping
     public void signUp(@RequestBody User user) {
-        System.out.println(user.getUserId());
         userService.signUp(user);
     }
 
     @GetMapping
     public void idCheck(@RequestParam String userId) {
-        if (userService.idExist(userId))
+        if (userService.userIdExist(userId))
             throw new DuplicateException(ErrorCode.ID_DUPLICATE);
     }
 }
