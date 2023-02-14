@@ -7,6 +7,6 @@ import study.sharedcalendar.dto.User;
 public interface UserMapper {
     int createUser(User user);
 
-    int idCheck(String userId);
+    boolean idExist(String userId);
 
 }
