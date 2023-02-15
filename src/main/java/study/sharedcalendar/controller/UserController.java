@@ -20,7 +20,6 @@ public class UserController {
 
     @GetMapping
     public void idCheck(@RequestParam String userId) {
-        if (userService.userIdExist(userId))
-            throw new DuplicateException(ErrorCode.ID_DUPLICATE);
+        userService.userIdDuplicationCheck(userId);
     }
 }

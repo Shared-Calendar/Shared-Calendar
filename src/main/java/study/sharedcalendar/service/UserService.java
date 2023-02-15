@@ -20,6 +20,12 @@ public class UserService {
             userMapper.createUser(user);
     }
 
+    public void userIdDuplicationCheck(String userId) {
+        if (userIdExist(userId)) {
+            throw new DuplicateException(ID_DUPLICATE);
+        }
+    }
+
     public boolean userIdExist(String userId) {
         return userMapper.userIdExist(userId);
     }
