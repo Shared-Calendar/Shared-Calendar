@@ -21,9 +21,15 @@ public class UserService {
             throw new DuplicateException(ID_DUPLICATE);
 
         String encryptedPassword = encryptHelper.encrypt(user.getPassword());
-        user.setPassword(encryptedPassword);
+        User signUpUser = User.builder()
+                .id(user.getId())
+                .userId(user.getUserId())
+                .password(encryptedPassword)
+                .email(user.getEmail())
+                .inviteUrl(user.getInviteUrl())
+                .build();
 
-        userMapper.createUser(user);
+        userMapper.createUser(signUpUser);
     }
 
     public void userIdDuplicationCheck(String userId) {
