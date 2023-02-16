@@ -1,9 +1,13 @@
 package study.sharedcalendar.service;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 import study.sharedcalendar.EncryptHelper;
 
-public class EncryptService implements EncryptHelper {
+@Service
+@Primary
+public class EncryptByBcryptService implements EncryptHelper {
     @Override
     public String encrypt(String password){
         return BCrypt.hashpw(password, BCrypt.gensalt());
