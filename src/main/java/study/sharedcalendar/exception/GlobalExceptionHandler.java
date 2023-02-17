@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import study.constant.ErrorResponse;
 
-import javax.validation.ValidationException;
+import javax.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -26,11 +26,10 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getFieldError().getDefaultMessage()));
     }
 
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity handleValidationException(ValidationException ex) {
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity handleConstraintViolationException(ConstraintViolationException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
-
 }

@@ -19,6 +19,8 @@ public class User {
     private String userId;
 
     @NotBlank
+    @Pattern(message = "잘못된 비밀번호 형식입니다."
+            , regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,15}|")
     private String password;
 
     @NotBlank
