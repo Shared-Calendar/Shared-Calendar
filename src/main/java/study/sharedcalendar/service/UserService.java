@@ -2,13 +2,9 @@ package study.sharedcalendar.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import study.sharedcalendar.dto.User;
+import study.sharedcalendar.dto.SignUpReq;
 import study.sharedcalendar.exception.DuplicateException;
 import study.sharedcalendar.mapper.UserMapper;
-
-import javax.validation.ValidationException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static study.constant.ErrorCode.*;
 
@@ -18,16 +14,15 @@ public class UserService {
     private final UserMapper userMapper;
     private final EncryptionService encryptionService;
 
-    public void signUp(User user) {
-        String encryptedPassword = encryptionService.encrypt(user.getPassword());
-        User signUpUser = User.builder()
-                .userId(user.getUserId())
+    public void signUp(SignUpReq signUpReq) {
+        String encryptedPassword = encryptionService.encrypt(signUpReq.getPassword());
+        SignUpReq signUpSignUpReq = SignUpReq.builder()
+                .userId(signUpReq.getUserId())
                 .password(encryptedPassword)
-                .email(user.getEmail())
-                .inviteUrl(user.getInviteUrl())
+                .email(signUpReq.getEmail())
                 .build();
 
-        userMapper.createUser(signUpUser);
+        userMapper.createUser(signUpSignUpReq);
     }
 
     public void userIdDuplicationCheck(String userId) {

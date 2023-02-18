@@ -10,9 +10,7 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Builder
-public class User {
-    private int id;
-
+public class SignUpReq {
     @NotNull
     @Pattern(message = "잘못된 아이디 형식입니다."
             , regexp = "^[a-z0-9_-]{3,10}")
@@ -26,6 +24,4 @@ public class User {
     @NotBlank
     @Email(message = "잘못된 이메일 형식입니다.")
     private String email;
-
-    private String inviteUrl;
 }
