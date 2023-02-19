@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파라미터 값을 확인해주세요."),
 
+    /* 403 FORBIDDEN */
+    INACTIVE_USER(HttpStatus.FORBIDDEN, "휴면 계정입니다."),
     /* 404 NOT_FOUND */
     NO_MATCHING_USER_ID(HttpStatus.NOT_FOUND, "아이디와 일치하는 유저가 없습니다."),
     NO_MATCHING_USER_PASSWORD(HttpStatus.NOT_FOUND, "비밀번호가 일치하지 않습니다."),
