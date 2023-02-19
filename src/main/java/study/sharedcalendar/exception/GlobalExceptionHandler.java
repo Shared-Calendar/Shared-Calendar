@@ -1,6 +1,5 @@
 package study.sharedcalendar.exception;
 
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -34,11 +33,11 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity handleNullPointerException(NullPointerException ex) {
+    @ExceptionHandler(NoMatchedUserException.class)
+    public ResponseEntity handleNullPointerException(NoMatchedUserException ex) {
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage()));
+                .status(ex.getErrorCode().getStatus())
+                .body(new ErrorResponse(ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage()));
     }
 
     @ExceptionHandler(AuthorizationException.class)

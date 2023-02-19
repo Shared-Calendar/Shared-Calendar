@@ -5,6 +5,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import study.sharedcalendar.dto.LoginReq;
 import study.sharedcalendar.dto.SignUpReq;
+import study.sharedcalendar.service.LoginService;
 import study.sharedcalendar.service.UserService;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import javax.validation.constraints.Pattern;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final LoginService loginService;
 
     @PostMapping
     public void signUp(@RequestBody @Valid SignUpReq signUpReq) {
@@ -33,6 +35,6 @@ public class UserController {
 
     @GetMapping("/login")
     public void login(@RequestBody @Valid LoginReq loginReq) {
-        userService.login(loginReq);
+        loginService.login(loginReq);
     }
 }
