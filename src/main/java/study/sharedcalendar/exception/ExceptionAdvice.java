@@ -1,27 +1,26 @@
 package study.sharedcalendar.exception;
 
-import com.sun.jdi.request.DuplicateRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.validation.ValidationException;
-
 @RestControllerAdvice
 public class ExceptionAdvice {
-
-    @ExceptionHandler(ValidationException.class)
-    public  ResponseEntity validationException(ValidationException e){
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity validationException(BindException e){
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());
     }
 
-    @ExceptionHandler(DuplicateRequestException.class)
-    public  ResponseEntity duplicationException(DuplicateRequestException e){
+    @ExceptionHandler(ExceptionError.class)
+    public ResponseEntity notFoundUSER(ExceptionError e){
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(e.getHttpStatus())
                 .body(e.getMessage());
     }
+
+
 }

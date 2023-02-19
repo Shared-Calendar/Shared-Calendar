@@ -23,5 +23,8 @@ public class UserDTO {
     private String email;
 
     private String inviteUrl;
+
+    private boolean activate;
+    private int loginCount;
 }
 

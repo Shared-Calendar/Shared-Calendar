@@ -28,4 +28,17 @@
         );
     </insert>
 
+    <select id="passwordChangedDate" resultType="int">
+        SELECT DATEDIFF(DAY, updated_at, CURRENT_DATE) FROM users WHERE id = #{id};
+    </select>
+
+
+    <update id="setLoginCount">
+        UPDATE users SET login_count = #{loginCount} WHERE id = #{id};
+    </update>
+
+    <update id="setActivate">
+        UPDATE users SET activate = #{activate} WHERE id = #{id};
+    </update>
+
 </mapper>
