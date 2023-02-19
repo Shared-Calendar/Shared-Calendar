@@ -3,6 +3,7 @@ package study.sharedcalendar.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import study.sharedcalendar.dto.LoginReq;
 import study.sharedcalendar.dto.SignUpReq;
 import study.sharedcalendar.service.UserService;
 
@@ -28,5 +29,10 @@ public class UserController {
                     , regexp = "^[a-z0-9_-]{3,10}")
             String userId) {
         userService.userIdDuplicationCheck(userId);
+    }
+
+    @GetMapping("/login")
+    public void login(@RequestBody @Valid LoginReq loginReq) {
+        userService.login(loginReq);
     }
 }
