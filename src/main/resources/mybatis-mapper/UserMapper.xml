@@ -15,7 +15,7 @@
                 #{password},
                 #{email},
                 1,
-                true,
+                false,
                 NOW(),
                 NOW());
     </insert>
