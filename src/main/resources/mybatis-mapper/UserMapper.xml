@@ -32,12 +32,12 @@
                    );
     </select>
 
-    <select id="findLoginUser" resultType="study.sharedcalendar.dto.LoginRes">
-        SELECT id        AS id
-             , user_id   AS userId
-             , password  AS password
-             , activate  AS activate
-             , try_count AS tryCount
+    <select id="findLoginUser" resultType="study.sharedcalendar.dto.User">
+        SELECT id
+             , user_id
+             , password
+             , activate
+             , try_count
         FROM user
         WHERE user_id = #{userId};
     </select>
