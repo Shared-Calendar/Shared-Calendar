@@ -2,7 +2,7 @@ package study.sharedcalendar.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import study.constant.ErrorCode;
+import study.sharedcalendar.constant.ErrorCode;
 
 @Getter
 @RequiredArgsConstructor

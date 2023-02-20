@@ -1,4 +1,4 @@
-package study.constant;
+package study.sharedcalendar.constant;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
