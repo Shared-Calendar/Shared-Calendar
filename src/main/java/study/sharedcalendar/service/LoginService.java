@@ -30,17 +30,22 @@ public class LoginService {
             throw new NoMatchedUserException(NO_MATCHING_USER_ID);
         }
         if (!encryptionService.isMatch(loginReq.getPassword(), loginRes.getPassword())) {
-            if (loginRes.getTryCount() == userConstant.getMaxLoginTryCount()) {
-                throw new AuthorizationException(EXCEEDED_LOGIN_ATTEMPTS);
-            }
+            loginTryCountCheck(loginRes.getTryCount());
             userMapper.incrementLoginTryCount(loginRes.getId());
             throw new AuthorizationException(NO_MATCHING_USER_PASSWORD);
         }
         if (!loginRes.isActivate()) {
             throw new AuthorizationException(INACTIVE_USER);
         }
+        loginTryCountCheck(loginRes.getTryCount());
         userMapper.initLoginTryCount(loginRes.getId());
         setLoginSession(loginRes.getId());
+    }
+
+    private void loginTryCountCheck(int count) {
+        if (count == userConstant.getMaxLoginTryCount()) {
+            throw new AuthorizationException(EXCEEDED_LOGIN_ATTEMPTS);
+        }
     }
 
     public void setLoginSession(int id) {
