@@ -18,9 +18,6 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public void signUp(@RequestBody @Validated UserDTO user) {
-        //if (errors.hasErrors()) {
-        //    throw new ValidationException("INVALID");
-        //}
         userService.signUp(user);
     }
 

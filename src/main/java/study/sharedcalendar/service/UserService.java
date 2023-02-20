@@ -1,30 +1,36 @@
 package study.sharedcalendar.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import study.sharedcalendar.dto.UserDTO;
-import study.sharedcalendar.exception.ErrorCode;
-import study.sharedcalendar.exception.ExceptionError;
+import study.sharedcalendar.exception.RuntimeExceptionVO;
 import study.sharedcalendar.mapper.UserMapper;
 
 import static org.mindrot.jbcrypt.BCrypt.*;
+import static study.sharedcalendar.exception.RuntimeExceptionCode.*;
 
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    @Value("${PASSWORD_EXPIRED_DATE}")
+    private int PASSWORD_EXPIRED_DATE;
+
     private final UserMapper userMapper;
 
-    private UserDTO getUser(UserDTO userInput){
-        return userMapper.getUser(userInput.getUserId());
+
+    private UserDTO findUser(UserDTO userInput){
+        return userMapper.findUser(userInput.getUserId());
     }
 
-    private void setLoginCount(int id, int count){
-        userMapper.setLoginCount(id,count);
+    private void modifyLoginCount(int id, int count){
+        userMapper.modifyLoginCount(id,count);
     }
 
-    private void setActivate(int id, boolean state){
-        userMapper.setActivate(id, state);
+    private void modifyActivate(int id, boolean state){
+        userMapper.modifyActivate(id, state);
     }
 
     private String hashPassword(String inputPassword){
@@ -35,9 +41,10 @@ public class UserService {
         return checkpw(inputPassword, hashedPassword);
     }
 
+
     public void signUp(UserDTO user){
-       if(getUser(user)!=null){
-           throw new ExceptionError(ErrorCode.DUPLICATED_USER);
+       if(findUser(user)!=null){
+           throw new RuntimeExceptionVO(DUPLICATED_USER);
        }
 
         UserDTO signUpUser = UserDTO.builder()
@@ -47,38 +54,37 @@ public class UserService {
                 .inviteUrl(user.getInviteUrl())
                 .build();
 
-        userMapper.createUser(signUpUser);
+        userMapper.inputUser(signUpUser);
     }
 
     public void signIn(UserDTO userInput){
-        UserDTO userSaved = getUser(userInput);
+        UserDTO userSaved = findUser(userInput);
         if(userSaved==null){
-            throw new ExceptionError(ErrorCode.NOT_FOUND_USER);
+            throw new RuntimeExceptionVO(NOT_FOUND_USER);
         }
 
         if(!userSaved.isActivate()){
-            throw new ExceptionError(ErrorCode.DEACTIVATED_USER);
+            throw new RuntimeExceptionVO(DEACTIVATED_USER);
         }
 
         int userLoginCount = userSaved.getLoginCount();
         if(checkPassword(userInput.getPassword(), userSaved.getPassword())){
             userInput = userSaved;
-            if((userMapper.passwordChangedDate(userInput.getId()))>=90){
-                throw new ExceptionError(ErrorCode.PASSWORD_EXPIRED);
+            if((userMapper.findPasswordChangedDate(userInput.getId()))>=PASSWORD_EXPIRED_DATE){
+                throw new RuntimeExceptionVO(PASSWORD_EXPIRED);
             }
 
-            setLoginCount(userSaved.getId(),0);
-        }
-        else{
+            modifyLoginCount(userSaved.getId(),0);
+        } else{
             if(userLoginCount==4){
-                setLoginCount(userSaved.getId(),0);
-                setActivate(userSaved.getId(), false);
-            }
-            else{
-                setLoginCount(userSaved.getId(),userLoginCount+1);
+                modifyLoginCount(userSaved.getId(),0);
+                modifyActivate(userSaved.getId(), false);
+            } else{
+                modifyLoginCount(userSaved.getId(),userLoginCount+1);
             }
 
-            throw new ExceptionError(ErrorCode.DISAGREEMENT_PASSWORD);
+            throw new RuntimeExceptionVO(DISAGREEMENT_PASSWORD);
         }
     }
+
 }

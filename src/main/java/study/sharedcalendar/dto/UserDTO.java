@@ -25,6 +25,7 @@ public class UserDTO {
     private String inviteUrl;
 
     private boolean activate;
+
     private int loginCount;
 }
 

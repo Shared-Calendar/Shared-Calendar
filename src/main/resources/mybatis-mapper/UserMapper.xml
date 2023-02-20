@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="study.sharedcalendar.mapper.UserMapper">
 
-    <select id="getUser" resultType="study.sharedcalendar.dto.UserDTO">
-        SELECT * FROM users WHERE user_id = #{userId};
+    <select id="findUser" resultType="study.sharedcalendar.dto.UserDTO">
+        SELECT * FROM USER_TB WHERE user_id = #{userId};
     </select>
 
-    <insert id="createUser">
-        INSERT INTO users(
+    <insert id="inputUser">
+        INSERT INTO USER_TB(
             user_id,
             password,
             email,
@@ -28,17 +28,16 @@
         );
     </insert>
 
-    <select id="passwordChangedDate" resultType="int">
-        SELECT DATEDIFF(DAY, updated_at, CURRENT_DATE) FROM users WHERE id = #{id};
+    <select id="findPasswordChangedDate" resultType="int">
+        SELECT DATEDIFF(DAY, updated_at, CURRENT_DATE) FROM USER_TB WHERE id = #{id};
     </select>
 
-
-    <update id="setLoginCount">
-        UPDATE users SET login_count = #{loginCount} WHERE id = #{id};
+    <update id="modifyLoginCount">
+        UPDATE USER_TB SET login_count = #{loginCount} WHERE id = #{id};
     </update>
 
-    <update id="setActivate">
-        UPDATE users SET activate = #{activate} WHERE id = #{id};
+    <update id="modifyActivate">
+        UPDATE USER_TB SET activate = #{activate} WHERE id = #{id};
     </update>
 
 </mapper>

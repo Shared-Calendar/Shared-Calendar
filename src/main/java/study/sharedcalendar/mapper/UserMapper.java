@@ -6,9 +6,10 @@ import study.sharedcalendar.dto.UserDTO;
 @Mapper
 public interface UserMapper {
 
-    UserDTO getUser(String userId);
-    void createUser(UserDTO user);
-    int passwordChangedDate(int userID);
-    void setLoginCount(@Param("id") int id, @Param("loginCount") int loginCount);
-    void setActivate(@Param("id") int id, @Param("activate") boolean activate);
+    UserDTO findUser(String userId);
+    void inputUser(UserDTO user);
+    int findPasswordChangedDate(int userID);
+    void modifyLoginCount(@Param("id") int id, @Param("loginCount") int loginCount);
+    void modifyActivate(@Param("id") int id, @Param("activate") boolean activate);
+
 }

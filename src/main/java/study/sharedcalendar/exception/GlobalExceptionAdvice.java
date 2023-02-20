@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ExceptionAdvice {
+public class GlobalExceptionAdvice {
+
     @ExceptionHandler(BindException.class)
     public ResponseEntity validationException(BindException e){
         return ResponseEntity
@@ -15,12 +16,11 @@ public class ExceptionAdvice {
                 .body(e.getMessage());
     }
 
-    @ExceptionHandler(ExceptionError.class)
-    public ResponseEntity notFoundUSER(ExceptionError e){
+    @ExceptionHandler(RuntimeExceptionVO.class)
+    public ResponseEntity notFoundUSER(RuntimeExceptionVO e){
         return ResponseEntity
                 .status(e.getHttpStatus())
                 .body(e.getMessage());
     }
-
 
 }

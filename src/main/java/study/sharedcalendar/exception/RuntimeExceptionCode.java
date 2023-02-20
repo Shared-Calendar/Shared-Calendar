@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum ErrorCode {
+public enum RuntimeExceptionCode {
+
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "NON_EXISTENT_USER"),
     DUPLICATED_USER(HttpStatus.BAD_REQUEST, "ID_DUPLICATE"),
     DISAGREEMENT_PASSWORD(HttpStatus.BAD_REQUEST, "PASSWORD_MISMATCH"),
@@ -16,4 +17,5 @@ public enum ErrorCode {
 
     private final HttpStatus httpStatus;
     private final String Message;
+
 }
