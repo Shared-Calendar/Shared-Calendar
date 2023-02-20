@@ -1,7 +1,6 @@
 package study.sharedcalendar.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import study.sharedcalendar.constant.UserConstant;
 import study.sharedcalendar.dto.LoginReq;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import static study.sharedcalendar.constant.ErrorCode.*;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LoginService {
@@ -26,7 +24,7 @@ public class LoginService {
     public void login(LoginReq loginReq) {
         LoginRes loginRes = userMapper.findLoginUser(loginReq);
 
-        if (loginRes.getUserId() == null) {
+        if (loginRes == null || loginRes.getUserId() == null) {
             throw new NoMatchedUserException(NO_MATCHING_USER_ID);
         }
         if (!encryptionService.isMatch(loginReq.getPassword(), loginRes.getPassword())) {
@@ -36,6 +34,9 @@ public class LoginService {
         }
         if (!loginRes.isActivate()) {
             throw new AuthorizationException(INACTIVE_USER);
+        }
+        if (userMapper.getPasswordDateDiff(loginRes.getId()) >= userConstant.getMaxPasswordValidityPeriod()) {
+            throw new AuthorizationException(EXCEEDED_PASSWORD_VALIDITY_PERIOD);
         }
         loginTryCountCheck(loginRes.getTryCount());
         userMapper.initLoginTryCount(loginRes.getId());

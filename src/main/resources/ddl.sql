@@ -6,6 +6,7 @@ create table user (
     invite_url text not null,
     activate boolean not null,
     try_count int not null,
+    password_date timestamp not null,
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp on update current_timestamp,
     primary key (id)
