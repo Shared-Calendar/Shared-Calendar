@@ -24,27 +24,31 @@ public class LoginService {
     public void login(LoginReq loginReq) {
         User user = userMapper.findLoginUser(loginReq);
 
-        if (user == null || user.getUserId() == null) {
+        if (user == null) {
             throw new NoMatchedUserException(NO_MATCHING_USER_ID);
         }
+
         if (!encryptionService.isMatch(loginReq.getPassword(), user.getPassword())) {
             loginTryCountCheck(user.getTryCount());
             userMapper.incrementLoginTryCount(user.getId());
             throw new AuthorizationException(NO_MATCHING_USER_PASSWORD);
         }
+
         if (!user.isActivate()) {
             throw new AuthorizationException(INACTIVE_USER);
         }
-        if (userMapper.getPasswordDateDiff(user.getId()) >= userConstant.getMaxPasswordValidityPeriod()) {
+
+        if (userMapper.getPasswordDateDiff(user.getId()) >= userConstant.MAX_PASSWORD_VALIDITY_PERIOD) {
             throw new AuthorizationException(EXCEEDED_PASSWORD_VALIDITY_PERIOD);
         }
+
         loginTryCountCheck(user.getTryCount());
         userMapper.initLoginTryCount(user.getId());
         setLoginSession(user.getId());
     }
 
     private void loginTryCountCheck(int count) {
-        if (count == userConstant.getMaxLoginTryCount()) {
+        if (count == userConstant.MAX_LONG_TRY_COUNT) {
             throw new AuthorizationException(EXCEEDED_LOGIN_ATTEMPTS);
         }
     }
