@@ -3,10 +3,10 @@ package study.sharedcalendar.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import study.sharedcalendar.config.VariableConfig;
 import study.sharedcalendar.dto.UserDTO;
 import study.sharedcalendar.exception.RuntimeExceptionVO;
 import study.sharedcalendar.mapper.UserMapper;
-
 import static org.mindrot.jbcrypt.BCrypt.*;
 import static study.sharedcalendar.exception.RuntimeExceptionCode.*;
 
@@ -15,13 +15,12 @@ import static study.sharedcalendar.exception.RuntimeExceptionCode.*;
 @RequiredArgsConstructor
 public class UserService {
 
-    @Value("${PASSWORD_EXPIRED_DATE}")
-    private int PASSWORD_EXPIRED_DATE;
-
     private final UserMapper userMapper;
 
+    private final VariableConfig variableConfig;
 
-    private UserDTO findUser(UserDTO userInput){
+
+    public UserDTO findUser(UserDTO userInput){
         return userMapper.findUser(userInput.getUserId());
     }
 
@@ -59,7 +58,7 @@ public class UserService {
 
     public void signIn(UserDTO userInput){
         UserDTO userSaved = findUser(userInput);
-        if(userSaved==null){
+        if(userSaved == null){
             throw new RuntimeExceptionVO(NOT_FOUND_USER);
         }
 
@@ -70,13 +69,13 @@ public class UserService {
         int userLoginCount = userSaved.getLoginCount();
         if(checkPassword(userInput.getPassword(), userSaved.getPassword())){
             userInput = userSaved;
-            if((userMapper.findPasswordChangedDate(userInput.getId()))>=PASSWORD_EXPIRED_DATE){
+            if((userMapper.findPasswordChangedDate(userInput.getId())) >= variableConfig.getPasswordExpiredDate()){
                 throw new RuntimeExceptionVO(PASSWORD_EXPIRED);
             }
 
             modifyLoginCount(userSaved.getId(),0);
         } else{
-            if(userLoginCount==4){
+            if(userLoginCount == variableConfig.getMaxLoginCount()){
                 modifyLoginCount(userSaved.getId(),0);
                 modifyActivate(userSaved.getId(), false);
             } else{

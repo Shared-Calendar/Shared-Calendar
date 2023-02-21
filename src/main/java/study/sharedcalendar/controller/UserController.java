@@ -8,11 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import study.sharedcalendar.dto.UserDTO;
 import study.sharedcalendar.service.UserService;
+import javax.servlet.http.HttpSession;
+
+import static study.sharedcalendar.service.SessionService.*;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
 
@@ -22,7 +26,14 @@ public class UserController {
     }
 
     @PostMapping("/sign-in")
-    public void signIn(@RequestBody UserDTO user) {
+    public void signIn(@RequestBody UserDTO user, HttpSession session) {
         userService.signIn(user);
+        createSession(session, user);
     }
+
+    @PostMapping("/sign-out")
+    public void signOut(HttpSession session) {
+        deleteSession(session);
+    }
+
 }
