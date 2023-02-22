@@ -1,11 +1,11 @@
 package study.sharedcalendar.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import study.sharedcalendar.exception.RuntimeExceptionVO;
 import javax.servlet.http.HttpSession;
 import static study.sharedcalendar.exception.RuntimeExceptionCode.NO_LOGIN_INFORMATION;
 
-@Component
+@Service
 public class SessionService {
 
     public static void createSession(HttpSession session, Object value){
@@ -22,7 +22,7 @@ public class SessionService {
 
     public static void deleteSession(HttpSession session){
         if(session != null){
-            session.removeAttribute(session.getId());
+            session.invalidate();
         }
 
         throw new RuntimeExceptionVO(NO_LOGIN_INFORMATION);
