@@ -17,7 +17,7 @@ public class GlobalExceptionAdvice {
     }
 
     @ExceptionHandler(RuntimeExceptionVO.class)
-    public ResponseEntity notFoundUSER(RuntimeExceptionVO e){
+    public ResponseEntity toRedirectException(RuntimeExceptionVO e){
         return ResponseEntity
                 .status(e.getHttpStatus())
                 .body(e.getMessage());
