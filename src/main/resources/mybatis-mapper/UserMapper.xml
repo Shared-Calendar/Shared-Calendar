@@ -10,6 +10,7 @@
                          invite_url,
                          activate,
                          try_count,
+                         password_date,
                          created_at,
                          updated_at)
         values (#{userId},
@@ -18,6 +19,7 @@
                 1,
                 true,
                 0,
+                NOW(),
                 NOW(),
                 NOW());
     </insert>
@@ -30,12 +32,12 @@
                    );
     </select>
 
-    <select id="findLoginUser" resultType="study.sharedcalendar.dto.LoginRes">
-        SELECT id        AS id
-             , user_id   AS userId
-             , password  AS password
-             , activate  AS activate
-             , try_count AS tryCount
+    <select id="findLoginUser" resultType="study.sharedcalendar.dto.User">
+        SELECT id
+             , user_id
+             , password
+             , activate
+             , try_count
         FROM user
         WHERE user_id = #{userId};
     </select>
@@ -49,7 +51,13 @@
     <update id="initLoginTryCount">
         UPDATE user
         SET try_count = 0
-        WHERE id = #id
+        WHERE id = #{id};
     </update>
+
+    <select id="getPasswordDateDiff" resultType="int">
+        SELECT DATEDIFF(dd, password_date, NOW()) as DATEDIFF
+        FROM user
+        WHERE id = #{id};
+    </select>
 
 </mapper>

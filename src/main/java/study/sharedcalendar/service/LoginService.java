@@ -1,11 +1,10 @@
 package study.sharedcalendar.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import study.sharedcalendar.constant.UserConstant;
 import study.sharedcalendar.dto.LoginReq;
-import study.sharedcalendar.dto.LoginRes;
+import study.sharedcalendar.dto.User;
 import study.sharedcalendar.exception.AuthorizationException;
 import study.sharedcalendar.exception.NoMatchedUserException;
 import study.sharedcalendar.mapper.UserMapper;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import static study.sharedcalendar.constant.ErrorCode.*;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LoginService {
@@ -24,26 +22,33 @@ public class LoginService {
     private final HttpSession httpSession;
 
     public void login(LoginReq loginReq) {
-        LoginRes loginRes = userMapper.findLoginUser(loginReq);
+        User user = userMapper.findLoginUser(loginReq);
 
-        if (loginRes.getUserId() == null) {
+        if (user == null) {
             throw new NoMatchedUserException(NO_MATCHING_USER_ID);
         }
-        if (!encryptionService.isMatch(loginReq.getPassword(), loginRes.getPassword())) {
-            loginTryCountCheck(loginRes.getTryCount());
-            userMapper.incrementLoginTryCount(loginRes.getId());
+
+        if (!encryptionService.isMatch(loginReq.getPassword(), user.getPassword())) {
+            loginTryCountCheck(user.getTryCount());
+            userMapper.incrementLoginTryCount(user.getId());
             throw new AuthorizationException(NO_MATCHING_USER_PASSWORD);
         }
-        if (!loginRes.isActivate()) {
+
+        if (!user.isActivate()) {
             throw new AuthorizationException(INACTIVE_USER);
         }
-        loginTryCountCheck(loginRes.getTryCount());
-        userMapper.initLoginTryCount(loginRes.getId());
-        setLoginSession(loginRes.getId());
+
+        if (userMapper.getPasswordDateDiff(user.getId()) >= userConstant.MAX_PASSWORD_VALIDITY_PERIOD) {
+            throw new AuthorizationException(EXCEEDED_PASSWORD_VALIDITY_PERIOD);
+        }
+
+        loginTryCountCheck(user.getTryCount());
+        userMapper.initLoginTryCount(user.getId());
+        setLoginSession(user.getId());
     }
 
     private void loginTryCountCheck(int count) {
-        if (count == userConstant.getMaxLoginTryCount()) {
+        if (count == userConstant.MAX_LONG_TRY_COUNT) {
             throw new AuthorizationException(EXCEEDED_LOGIN_ATTEMPTS);
         }
     }

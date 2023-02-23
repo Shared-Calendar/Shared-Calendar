@@ -1,15 +1,16 @@
 package study.sharedcalendar.constant;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
-@Setter
-@Getter
-@Component
 @ConfigurationProperties(prefix = "user.config")
+@ConstructorBinding
 public class UserConstant {
-    private int maxLoginTryCount;
-    private int maxPasswordValidityPeriod;
+    public static int MAX_LONG_TRY_COUNT;
+    public static int MAX_PASSWORD_VALIDITY_PERIOD;
+
+    public UserConstant(int maxLoginTryCount, int maxPasswordValidityPeriod) {
+        MAX_LONG_TRY_COUNT = maxLoginTryCount;
+        MAX_PASSWORD_VALIDITY_PERIOD = maxPasswordValidityPeriod;
+    }
 }
