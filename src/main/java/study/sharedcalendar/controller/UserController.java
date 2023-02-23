@@ -2,9 +2,7 @@ package study.sharedcalendar.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import study.constant.ErrorCode;
 import study.sharedcalendar.dto.User;
-import study.sharedcalendar.exception.DuplicateException;
 import study.sharedcalendar.service.UserService;
 
 @RestController
