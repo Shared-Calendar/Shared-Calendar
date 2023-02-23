@@ -32,4 +32,18 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
+
+    @ExceptionHandler(NoMatchedUserException.class)
+    public ResponseEntity handleNullPointerException(NoMatchedUserException ex) {
+        return ResponseEntity
+                .status(ex.getErrorCode().getStatus())
+                .body(new ErrorResponse(ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage()));
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity handleAuthorizationException(AuthorizationException ex) {
+        return ResponseEntity
+                .status(ex.getErrorCode().getStatus())
+                .body(new ErrorResponse(ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage()));
+    }
 }
