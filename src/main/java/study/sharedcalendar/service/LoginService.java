@@ -10,8 +10,7 @@ import study.sharedcalendar.mapper.UserMapper;
 
 import javax.servlet.http.HttpSession;
 
-import static study.constant.ErrorCode.NO_MATCHING_USER_ID;
-import static study.constant.ErrorCode.NO_MATCHING_USER_PASSWORD;
+import static study.constant.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +27,9 @@ public class LoginService {
         }
         if (!encryptionService.isMatch(loginReq.getPassword(), loginRes.getPassword())) {
             throw new AuthorizationException(NO_MATCHING_USER_PASSWORD);
+        }
+        if (!loginRes.isActivate()) {
+            throw new AuthorizationException(INACTIVE_USER);
         }
 
         setLoginSession(loginRes.getId());

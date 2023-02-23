@@ -15,6 +15,10 @@ public class UserService {
     private final EncryptionService encryptionService;
 
     public void signUp(SignUpReq signUpReq) {
+        if (userIdExist(signUpReq.getUserId())) {
+            throw new DuplicateException(ID_DUPLICATE);
+        }
+
         String encryptedPassword = encryptionService.encrypt(signUpReq.getPassword());
         SignUpReq signUpSignUpReq = SignUpReq.builder()
                 .userId(signUpReq.getUserId())
