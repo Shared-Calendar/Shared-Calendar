@@ -2,7 +2,7 @@ package study.sharedcalendar.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import study.sharedcalendar.dto.User;
+import study.sharedcalendar.dto.SignUpReq;
 import study.sharedcalendar.exception.DuplicateException;
 import study.sharedcalendar.mapper.UserMapper;
 
@@ -14,20 +14,15 @@ public class UserService {
     private final UserMapper userMapper;
     private final EncryptionService encryptionService;
 
-    public void signUp(User user) {
-        if (userIdExist(user.getUserId()))
-            throw new DuplicateException(ID_DUPLICATE);
-
-        String encryptedPassword = encryptionService.encrypt(user.getPassword());
-        User signUpUser = User.builder()
-                .id(user.getId())
-                .userId(user.getUserId())
+    public void signUp(SignUpReq signUpReq) {
+        String encryptedPassword = encryptionService.encrypt(signUpReq.getPassword());
+        SignUpReq signUpSignUpReq = SignUpReq.builder()
+                .userId(signUpReq.getUserId())
                 .password(encryptedPassword)
-                .email(user.getEmail())
-                .inviteUrl(user.getInviteUrl())
+                .email(signUpReq.getEmail())
                 .build();
 
-        userMapper.createUser(signUpUser);
+        userMapper.createUser(signUpSignUpReq);
     }
 
     public void userIdDuplicationCheck(String userId) {
@@ -39,4 +34,5 @@ public class UserService {
     public boolean userIdExist(String userId) {
         return userMapper.userIdExist(userId);
     }
+
 }
