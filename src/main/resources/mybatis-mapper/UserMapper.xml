@@ -3,24 +3,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="study.sharedcalendar.mapper.UserMapper">
-    <insert id="createUser" >
-        INSERT INTO user(
-            user_id,
-            password,
-            email,
-            invite_url,
-            activate,
-            created_at,
-            updated_at
-        )values (
-                 #{userId},
-                 #{password},
-                 #{email},
-                 1,
-                 1,
-                 NOW(),
-                 NOW()
-                        );
+    <insert id="createUser">
+        INSERT INTO user(user_id,
+                         password,
+                         email,
+                         invite_url,
+                         activate,
+                         created_at,
+                         updated_at)
+        values (#{userId},
+                #{password},
+                #{email},
+                1,
+                1,
+                NOW(),
+                NOW());
     </insert>
+
+    <select id="userIdExist" resultType="boolean">
+        SELECT EXISTS(
+                       SELECT *
+                       FROM user
+                       WHERE user_id = #{userId}
+                   );
+    </select>
 
 </mapper>
