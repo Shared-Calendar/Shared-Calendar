@@ -5,6 +5,7 @@ create table user (
     email varchar(45) not null,
     invite_url text not null,
     activate boolean not null,
+    try_count int not null,
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp on update current_timestamp,
     primary key (id)

@@ -8,4 +8,5 @@ public class LoginRes {
     String userId;
     String password;
     boolean activate;
+    int tryCount;
 }

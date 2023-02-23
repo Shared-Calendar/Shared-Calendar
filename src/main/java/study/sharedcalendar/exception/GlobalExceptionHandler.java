@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import study.constant.ErrorResponse;
+import study.sharedcalendar.constant.ErrorResponse;
 
 import javax.validation.ConstraintViolationException;
 

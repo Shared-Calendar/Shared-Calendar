@@ -2,6 +2,8 @@ package study.sharedcalendar.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import study.sharedcalendar.constant.UserConstant;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +13,7 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Builder
 public class SignUpReq {
+
     @NotNull
     @Pattern(message = "잘못된 아이디 형식입니다."
             , regexp = "^[a-z0-9_-]{3,10}")

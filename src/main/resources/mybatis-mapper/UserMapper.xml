@@ -9,13 +9,15 @@
                          email,
                          invite_url,
                          activate,
+                         try_count,
                          created_at,
                          updated_at)
         values (#{userId},
                 #{password},
                 #{email},
                 1,
-                false,
+                true,
+                0,
                 NOW(),
                 NOW());
     </insert>
@@ -29,9 +31,25 @@
     </select>
 
     <select id="findLoginUser" resultType="study.sharedcalendar.dto.LoginRes">
-        SELECT id, user_id, password, activate
+        SELECT id        AS id
+             , user_id   AS userId
+             , password  AS password
+             , activate  AS activate
+             , try_count AS tryCount
         FROM user
-        WHERE user_id=#{userId};
+        WHERE user_id = #{userId};
     </select>
+
+    <update id="incrementLoginTryCount">
+        UPDATE user
+        SET try_count = try_count + 1
+        WHERE id = #{id};
+    </update>
+
+    <update id="initLoginTryCount">
+        UPDATE user
+        SET try_count = 0
+        WHERE id = #id
+    </update>
 
 </mapper>
