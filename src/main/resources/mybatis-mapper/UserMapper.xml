@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.sharedcalendar.mapper.UserMapper">
+    <insert id="createUser">
+        INSERT INTO user(user_id,
+                         password,
+                         email,
+                         invite_url,
+                         activate,
+                         try_count,
+                         password_date,
+                         created_at,
+                         updated_at)
+        values (#{userId},
+                #{password},
+                #{email},
+                1,
+                true,
+                0,
+                NOW(),
+                NOW(),
+                NOW());
+    </insert>
+
+    <select id="userIdExist" resultType="boolean">
+        SELECT EXISTS(
+                       SELECT *
+                       FROM user
+                       WHERE user_id = #{userId}
+                   );
+    </select>
+
+    <select id="findLoginUser" resultType="study.sharedcalendar.dto.User">
+        SELECT id
+             , user_id
+             , password
+             , activate
+             , try_count
+        FROM user
+        WHERE user_id = #{userId};
+    </select>
+
+    <update id="incrementLoginTryCount">
+        UPDATE user
+        SET try_count = try_count + 1
+        WHERE id = #{id};
+    </update>
+
+    <update id="initLoginTryCount">
+        UPDATE user
+        SET try_count = 0
+        WHERE id = #{id};
+    </update>
+
+    <select id="getPasswordDateDiff" resultType="int">
+        SELECT DATEDIFF(dd, password_date, NOW()) as DATEDIFF
+        FROM user
+        WHERE id = #{id};
+    </select>
+
+</mapper>
