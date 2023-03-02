@@ -28,4 +28,6 @@ public class SignUpReq {
 	@NotBlank
 	@Email(message = "잘못된 이메일 형식입니다.")
 	private String email;
+
+	private String inviteUrlCode;
 }

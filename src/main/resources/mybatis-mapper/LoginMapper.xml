@@ -10,25 +10,25 @@
              , password
              , activate
              , try_count
-        FROM USER
+        FROM USER_TB
         WHERE user_id = #{userId};
     </select>
 
     <update id="incrementLoginTryCount">
-        UPDATE USER
+        UPDATE USER_TB
         SET try_count = try_count + 1
         WHERE id = #{id};
     </update>
 
     <update id="initLoginTryCount">
-        UPDATE USER
+        UPDATE USER_TB
         SET try_count = 0
         WHERE id = #{id};
     </update>
 
     <select id="getPasswordDateDiff" resultType="int">
         SELECT DATEDIFF(dd, password_date, NOW()) as DATEDIFF
-        FROM USER
+        FROM USER_TB
         WHERE id = #{id};
     </select>
 
