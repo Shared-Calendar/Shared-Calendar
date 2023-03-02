@@ -15,4 +15,5 @@ public interface LoginMapper {
 	void initLoginTryCount(int id);
 
 	int getPasswordDateDiff(int id);
+
 }

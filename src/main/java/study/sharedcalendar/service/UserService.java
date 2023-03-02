@@ -47,6 +47,14 @@ public class UserService {
 		return userMapper.userIdExist(userId);
 	}
 
+	public int getIdByUserId(String userId) {
+		Integer id = userMapper.getIdByUserId(userId);
+		if (id == null) {
+			throw new NoMatchedUserException(NO_MATCHING_USER_ID);
+		}
+		return id;
+	}
+
 	public int getIdByInviteCode(String inviteCode) {
 		Integer id = userMapper.getIdByInviteCode(inviteCode);
 		if (id == null) {

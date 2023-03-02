@@ -6,9 +6,12 @@ import study.sharedcalendar.dto.SignUpReq;
 
 @Mapper
 public interface UserMapper {
+
 	int createUser(SignUpReq signUpReq);
 
 	boolean userIdExist(String userId);
 
 	Integer getIdByInviteCode(String inviteUrlCode);
+
+	Integer getIdByUserId(String userId);
 }

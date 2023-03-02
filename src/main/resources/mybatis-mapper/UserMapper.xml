@@ -4,15 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="study.sharedcalendar.mapper.UserMapper">
     <insert id="createUser">
-        INSERT INTO USER_TB(user_id,
-                            password,
-                            email,
-                            invite_url_code,
-                            activate,
-                            try_count,
-                            password_date,
-                            created_at,
-                            updated_at)
+        INSERT INTO USER(user_id,
+                         password,
+                         email,
+                         invite_url_code,
+                         activate,
+                         try_count,
+                         password_date,
+                         created_at,
+                         updated_at)
         values (#{userId},
                 #{password},
                 #{email},
@@ -27,15 +27,21 @@
     <select id="userIdExist" resultType="boolean">
         SELECT EXISTS(
                        SELECT *
-                       FROM USER_TB
+                       FROM USER
                        WHERE user_id = #{userId}
                    );
     </select>
 
     <select id="getIdByInviteCode" resultType="int">
         SELECT id
-        FROM USER_TB
+        FROM USER
         WHERE invite_url_code = #{inviteUrlCode};
+    </select>
+
+    <select id="getIdByUserId" resultType="int">
+        SELECT id
+        FROM USER
+        WHERE user_id = #{userId};
     </select>
 
 </mapper>

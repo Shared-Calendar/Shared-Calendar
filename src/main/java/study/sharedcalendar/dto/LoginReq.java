@@ -1,14 +1,14 @@
 package study.sharedcalendar.dto;
 
-import lombok.Getter;
-
 import javax.validation.constraints.NotBlank;
+
+import lombok.Getter;
 
 @Getter
 public class LoginReq {
-    @NotBlank
-    private String userId;
+	@NotBlank
+	private String userId;
 
-    @NotBlank
-    private String password;
+	@NotBlank
+	private String password;
 }

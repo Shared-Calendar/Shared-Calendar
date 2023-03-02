@@ -1,5 +1,7 @@
 package study.sharedcalendar.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,31 @@ public class ConnectionController {
 	@PostMapping("create/{connectorCode}")
 	public void createConnection(@PathVariable String connectorCode) {
 		connectionService.createConnection(connectorCode);
+	}
+
+	@PostMapping("/count")
+	public int countConnection() {
+		return connectionService.countConnection();
+	}
+
+	@PostMapping("/delete/{connectorUserId}")
+	public void deleteConnection(@PathVariable String connectorUserId) {
+		connectionService.deleteConnection(connectorUserId);
+	}
+
+	@PostMapping("/find")
+	public List<String> findTenConnection() {
+		return connectionService.findTenConnection();
+	}
+
+	@PostMapping("/find-all")
+	public List<String> findAllConnection() {
+		return connectionService.findAllConnection();
+	}
+
+	@PostMapping("/find-recent")
+	public List<String> findRecentConnection() {
+		return connectionService.findRecentConnection();
 	}
 
 }

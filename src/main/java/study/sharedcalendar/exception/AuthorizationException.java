@@ -6,6 +6,6 @@ import study.sharedcalendar.constant.ErrorCode;
 
 @Getter
 @RequiredArgsConstructor
-public class AuthorizationException extends RuntimeException{
-    private final ErrorCode errorCode;
+public class AuthorizationException extends RuntimeException {
+	private final ErrorCode errorCode;
 }
