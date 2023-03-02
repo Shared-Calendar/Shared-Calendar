@@ -1,43 +1,58 @@
 package study.sharedcalendar.service;
 
-import lombok.RequiredArgsConstructor;
+import static study.sharedcalendar.constant.ErrorCode.*;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
-import study.sharedcalendar.constant.UserConstant;
+
+import lombok.RequiredArgsConstructor;
 import study.sharedcalendar.dto.SignUpReq;
 import study.sharedcalendar.exception.DuplicateException;
+import study.sharedcalendar.exception.NoMatchedUserException;
 import study.sharedcalendar.mapper.UserMapper;
-
-import static study.sharedcalendar.constant.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserMapper userMapper;
-    private final EncryptionService encryptionService;
+	private final UserMapper userMapper;
+	private final EncryptionService encryptionService;
 
-    public void signUp(SignUpReq signUpReq) {
-        if (userIdExist(signUpReq.getUserId())) {
-            throw new DuplicateException(ID_DUPLICATE);
-        }
+	private String createInviteCode() {
+		return RandomStringUtils.randomAlphabetic(12);
+	}
 
-        String encryptedPassword = encryptionService.encrypt(signUpReq.getPassword());
-        SignUpReq signUpSignUpReq = SignUpReq.builder()
-                .userId(signUpReq.getUserId())
-                .password(encryptedPassword)
-                .email(signUpReq.getEmail())
-                .build();
+	public void signUp(SignUpReq signUpReq) {
+		if (userIdExist(signUpReq.getUserId())) {
+			throw new DuplicateException(ID_DUPLICATE);
+		}
 
-        userMapper.createUser(signUpSignUpReq);
-    }
+		String encryptedPassword = encryptionService.encrypt(signUpReq.getPassword());
+		SignUpReq signUpSignUpReq = SignUpReq.builder()
+			.userId(signUpReq.getUserId())
+			.password(encryptedPassword)
+			.email(signUpReq.getEmail())
+			.inviteUrlCode(createInviteCode())
+			.build();
 
-    public void userIdDuplicationCheck(String userId) {
-        if (userIdExist(userId)) {
-            throw new DuplicateException(ID_DUPLICATE);
-        }
-    }
+		userMapper.createUser(signUpSignUpReq);
+	}
 
-    public boolean userIdExist(String userId) {
-        return userMapper.userIdExist(userId);
-    }
+	public void userIdDuplicationCheck(String userId) {
+		if (userIdExist(userId)) {
+			throw new DuplicateException(ID_DUPLICATE);
+		}
+	}
+
+	public boolean userIdExist(String userId) {
+		return userMapper.userIdExist(userId);
+	}
+
+	public int getIdByInviteCode(String inviteCode) {
+		Integer id = userMapper.getIdByInviteCode(inviteCode);
+		if (id == null) {
+			throw new NoMatchedUserException(NO_MATCHING_USER_ID);
+		}
+		return id;
+	}
 
 }

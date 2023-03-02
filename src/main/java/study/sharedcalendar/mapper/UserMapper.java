@@ -10,4 +10,5 @@ public interface UserMapper {
 
 	boolean userIdExist(String userId);
 
+	Integer getIdByInviteCode(String inviteUrlCode);
 }
