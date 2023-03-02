@@ -61,4 +61,12 @@ public class LoginService {
 	public void setLoginSession(int id) {
 		httpSession.setAttribute(userConstant.SESSION_ID, id);
 	}
+
+	public Integer getLoginSession() {
+		Integer id = (Integer)httpSession.getAttribute(userConstant.SESSION_ID);
+		if (id == null) {
+			throw new NoMatchedUserException(NO_LOGIN_INFORMATION);
+		}
+		return id;
+	}
 }

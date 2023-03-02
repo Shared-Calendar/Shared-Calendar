@@ -7,6 +7,7 @@ import study.sharedcalendar.dto.User;
 
 @Mapper
 public interface LoginMapper {
+
 	User findLoginUser(LoginReq loginReq);
 
 	void incrementLoginTryCount(int id);
