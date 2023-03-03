@@ -1,43 +1,61 @@
 package study.sharedcalendar.service;
 
-import lombok.RequiredArgsConstructor;
+import static study.sharedcalendar.constant.ErrorCode.*;
+
 import org.springframework.stereotype.Service;
-import study.sharedcalendar.constant.UserConstant;
+
+import lombok.RequiredArgsConstructor;
+import study.sharedcalendar.dto.LoginReq;
 import study.sharedcalendar.dto.SignUpReq;
+import study.sharedcalendar.dto.User;
 import study.sharedcalendar.exception.DuplicateException;
 import study.sharedcalendar.mapper.UserMapper;
-
-import static study.sharedcalendar.constant.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserMapper userMapper;
-    private final EncryptionService encryptionService;
+	private final UserMapper userMapper;
+	private final EncryptionService encryptionService;
 
-    public void signUp(SignUpReq signUpReq) {
-        if (userIdExist(signUpReq.getUserId())) {
-            throw new DuplicateException(ID_DUPLICATE);
-        }
+	public void signUp(SignUpReq signUpReq) {
+		if (userIdExist(signUpReq.getUserId())) {
+			throw new DuplicateException(ID_DUPLICATE);
+		}
 
-        String encryptedPassword = encryptionService.encrypt(signUpReq.getPassword());
-        SignUpReq signUpSignUpReq = SignUpReq.builder()
-                .userId(signUpReq.getUserId())
-                .password(encryptedPassword)
-                .email(signUpReq.getEmail())
-                .build();
+		String encryptedPassword = encryptionService.encrypt(signUpReq.getPassword());
+		SignUpReq signUpSignUpReq = SignUpReq.builder()
+			.userId(signUpReq.getUserId())
+			.password(encryptedPassword)
+			.email(signUpReq.getEmail())
+			.build();
 
-        userMapper.createUser(signUpSignUpReq);
-    }
+		userMapper.createUser(signUpSignUpReq);
+	}
 
-    public void userIdDuplicationCheck(String userId) {
-        if (userIdExist(userId)) {
-            throw new DuplicateException(ID_DUPLICATE);
-        }
-    }
+	public void userIdDuplicationCheck(String userId) {
+		if (userIdExist(userId)) {
+			throw new DuplicateException(ID_DUPLICATE);
+		}
+	}
 
-    public boolean userIdExist(String userId) {
-        return userMapper.userIdExist(userId);
-    }
+	public boolean userIdExist(String userId) {
+		return userMapper.userIdExist(userId);
+	}
+
+	public User findLoginUser(LoginReq loginReq) {
+		return userMapper.findLoginUser(loginReq);
+	}
+
+	public void incrementLoginTryCount(int id) {
+		userMapper.incrementLoginTryCount(id);
+	}
+
+	public void initLoginTryCount(int id) {
+		userMapper.initLoginTryCount(id);
+	}
+
+	public int getPasswordDateDiff(int id) {
+		return userMapper.getPasswordDateDiff(id);
+	}
 
 }

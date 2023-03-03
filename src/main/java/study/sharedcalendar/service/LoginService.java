@@ -12,18 +12,17 @@ import study.sharedcalendar.dto.LoginReq;
 import study.sharedcalendar.dto.User;
 import study.sharedcalendar.exception.AuthorizationException;
 import study.sharedcalendar.exception.NoMatchedUserException;
-import study.sharedcalendar.mapper.LoginMapper;
 
 @Service
 @RequiredArgsConstructor
 public class LoginService {
-	private final LoginMapper loginMapper;
+	private final UserService userService;
 	private final UserConstant userConstant;
 	private final EncryptionService encryptionService;
 	private final HttpSession httpSession;
 
 	public void login(LoginReq loginReq) {
-		User user = loginMapper.findLoginUser(loginReq);
+		User user = userService.findLoginUser(loginReq);
 
 		if (user == null) {
 			throw new NoMatchedUserException(NO_MATCHING_USER_ID);
@@ -31,7 +30,7 @@ public class LoginService {
 
 		if (!encryptionService.isMatch(loginReq.getPassword(), user.getPassword())) {
 			loginTryCountCheck(user.getTryCount());
-			loginMapper.incrementLoginTryCount(user.getId());
+			userService.incrementLoginTryCount(user.getId());
 			throw new AuthorizationException(NO_MATCHING_USER_PASSWORD);
 		}
 
@@ -39,12 +38,12 @@ public class LoginService {
 			throw new AuthorizationException(INACTIVE_USER);
 		}
 
-		if (loginMapper.getPasswordDateDiff(user.getId()) >= userConstant.MAX_PASSWORD_VALIDITY_PERIOD) {
+		if (userService.getPasswordDateDiff(user.getId()) >= userConstant.MAX_PASSWORD_VALIDITY_PERIOD) {
 			throw new AuthorizationException(EXCEEDED_PASSWORD_VALIDITY_PERIOD);
 		}
 
 		loginTryCountCheck(user.getTryCount());
-		loginMapper.initLoginTryCount(user.getId());
+		userService.initLoginTryCount(user.getId());
 		setLoginSession(user.getId());
 	}
 
