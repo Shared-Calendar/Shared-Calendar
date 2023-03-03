@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="study.sharedcalendar.mapper.UserMapper">
     <insert id="createUser">
-        INSERT INTO user(user_id,
+        INSERT INTO USER(user_id,
                          password,
                          email,
                          invite_url,
@@ -27,7 +27,7 @@
     <select id="userIdExist" resultType="boolean">
         SELECT EXISTS(
                        SELECT *
-                       FROM user
+                       FROM USER
                        WHERE user_id = #{userId}
                    );
     </select>
@@ -38,26 +38,25 @@
              , password
              , activate
              , try_count
-        FROM user
+        FROM USER
         WHERE user_id = #{userId};
     </select>
 
     <update id="incrementLoginTryCount">
-        UPDATE user
+        UPDATE USER
         SET try_count = try_count + 1
         WHERE id = #{id};
     </update>
 
     <update id="initLoginTryCount">
-        UPDATE user
+        UPDATE USER
         SET try_count = 0
         WHERE id = #{id};
     </update>
 
     <select id="getPasswordDateDiff" resultType="int">
         SELECT DATEDIFF(dd, password_date, NOW()) as DATEDIFF
-        FROM user
+        FROM USER
         WHERE id = #{id};
     </select>
-
 </mapper>

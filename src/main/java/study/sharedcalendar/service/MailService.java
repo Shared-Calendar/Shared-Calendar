@@ -1,0 +1,69 @@
+package study.sharedcalendar.service;
+
+import java.util.Random;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import study.sharedcalendar.constant.ErrorCode;
+import study.sharedcalendar.constant.MailConstant;
+import study.sharedcalendar.exception.NoMatchedKeyException;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class MailService {
+	private final JavaMailSender mailSender;
+	private final RedisService redisService;
+	private final MailConstant mailConstant;
+
+	public void sendAuthEmail(String email) throws MessagingException {
+		String authCode = createAuthCode(mailConstant.AUTH_CODE_LENGTH);
+		log.info("인증 코드 길이 ={}", mailConstant.AUTH_CODE_LENGTH);
+		log.info("인증 코드={}", authCode);
+
+		MimeMessage mail = mailSender.createMimeMessage();
+		String mailContent = "<h1>[이메일 인증]</h1>"
+			+ "<br>"
+			+ "<h3>이메일 인증 번호 : " + authCode + "</h3>";
+
+		mail.setSubject("회원가입 이메일 인증 ", "utf-8");
+		mail.setText(mailContent, "utf-8", "html");
+		mail.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+		log.info("인증 이메일 설정 완료");
+		try {
+			mailSender.send(mail);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		redisService.setDataExpire(email, authCode, mailConstant.EXPIRE_TIME);
+	}
+
+	public void checkEmailAuthCode(String email, String authCode) {
+		if (!redisService.checkData(email, authCode)) {
+			throw new NoMatchedKeyException(ErrorCode.NO_MATCHING_AUTH_CODE);
+		}
+	}
+
+	private String createAuthCode(int size) {
+		Random random = new Random();
+		StringBuffer buffer = new StringBuffer();
+		int num = 0;
+
+		while (buffer.length() < size) {
+			num = random.nextInt(10);
+			buffer.append(num);
+		}
+
+		return buffer.toString();
+	}
+
+}

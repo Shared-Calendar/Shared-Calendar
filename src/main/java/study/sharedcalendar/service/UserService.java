@@ -1,19 +1,21 @@
 package study.sharedcalendar.service;
 
-import lombok.RequiredArgsConstructor;
+import static study.sharedcalendar.constant.ErrorCode.*;
+
 import org.springframework.stereotype.Service;
-import study.sharedcalendar.constant.UserConstant;
+
+import lombok.RequiredArgsConstructor;
+import study.sharedcalendar.constant.MailConstant;
 import study.sharedcalendar.dto.SignUpReq;
 import study.sharedcalendar.exception.DuplicateException;
 import study.sharedcalendar.mapper.UserMapper;
-
-import static study.sharedcalendar.constant.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserMapper userMapper;
     private final EncryptionService encryptionService;
+    private final MailConstant mailConstant;
 
     public void signUp(SignUpReq signUpReq) {
         if (userIdExist(signUpReq.getUserId())) {

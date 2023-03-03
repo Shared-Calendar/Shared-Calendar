@@ -1,14 +1,12 @@
 package study.sharedcalendar.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import study.sharedcalendar.constant.UserConstant;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
 @Builder

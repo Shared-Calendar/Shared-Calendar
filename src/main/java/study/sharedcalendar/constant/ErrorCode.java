@@ -1,14 +1,17 @@
 package study.sharedcalendar.constant;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파라미터 값을 확인해주세요."),
 
+    /* 400 BAD REQUEST */
+    NO_MATCHING_AUTH_CODE(HttpStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다."),
     /* 403 FORBIDDEN */
     INACTIVE_USER(HttpStatus.FORBIDDEN, "휴면 계정입니다."),
     EXCEEDED_LOGIN_ATTEMPTS(HttpStatus.FORBIDDEN, "로그인 횟수가 초과했습니다. 비밀번호를 재설정해주세요."),
