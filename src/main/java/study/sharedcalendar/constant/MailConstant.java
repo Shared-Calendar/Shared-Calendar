@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @ConfigurationProperties(prefix = "mail.config")
 @ConstructorBinding
 public class MailConstant {
-
 	public static long EXPIRE_TIME;
 	public static int AUTH_CODE_LENGTH;
 

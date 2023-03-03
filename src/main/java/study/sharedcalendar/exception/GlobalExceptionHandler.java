@@ -1,9 +1,10 @@
 package study.sharedcalendar.exception;
 
+import static org.springframework.http.HttpStatus.*;
+
 import javax.mail.MessagingException;
 import javax.validation.ConstraintViolationException;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,15 +26,15 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity handleMethodValidException(MethodArgumentNotValidException ex) {
 		return ResponseEntity
-			.status(HttpStatus.BAD_REQUEST)
-			.body(new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getFieldError().getDefaultMessage()));
+			.status(BAD_REQUEST)
+			.body(new ErrorResponse(BAD_REQUEST, ex.getFieldError().getDefaultMessage()));
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity handleConstraintViolationException(ConstraintViolationException ex) {
 		return ResponseEntity
-			.status(HttpStatus.BAD_REQUEST)
-			.body(new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage()));
+			.status(BAD_REQUEST)
+			.body(new ErrorResponse(BAD_REQUEST, ex.getMessage()));
 	}
 
 	@ExceptionHandler(NoMatchedUserException.class)
@@ -50,18 +51,18 @@ public class GlobalExceptionHandler {
 			.body(new ErrorResponse(ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage()));
 	}
 
-
 	@ExceptionHandler(MailSendException.class)
 	public ResponseEntity handleMailSendException(MailSendException ex) {
 		return ResponseEntity
-			.status(HttpStatus.NOT_IMPLEMENTED)
-			.body(new ErrorResponse(HttpStatus.NOT_IMPLEMENTED, "인증 메일 전송에 실패했습니다."));
+			.status(NOT_IMPLEMENTED)
+			.body(new ErrorResponse(NOT_IMPLEMENTED, "인증 메일 전송에 실패했습니다."));
 	}
+
 	@ExceptionHandler(MessagingException.class)
 	public ResponseEntity handleMessagingException(MessagingException ex) {
 		return ResponseEntity
-			.status(HttpStatus.NOT_IMPLEMENTED)
-			.body(new ErrorResponse(HttpStatus.NOT_IMPLEMENTED, "인증 메일 설정값이 잘못되었습니다."));
+			.status(NOT_IMPLEMENTED)
+			.body(new ErrorResponse(NOT_IMPLEMENTED, "인증 메일 설정값이 잘못되었습니다."));
 	}
 
 	@ExceptionHandler(NoMatchedKeyException.class)

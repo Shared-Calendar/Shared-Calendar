@@ -38,12 +38,7 @@ public class MailService {
 		mail.setText(mailContent, "utf-8", "html");
 		mail.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 		log.info("인증 이메일 설정 완료");
-		try {
-			mailSender.send(mail);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		mailSender.send(mail);
 		redisService.setDataExpire(email, authCode, mailConstant.EXPIRE_TIME);
 	}
 
