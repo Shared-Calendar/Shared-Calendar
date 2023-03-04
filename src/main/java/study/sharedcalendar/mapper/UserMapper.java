@@ -1,21 +1,23 @@
 package study.sharedcalendar.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+
 import study.sharedcalendar.dto.LoginReq;
-import study.sharedcalendar.dto.User;
 import study.sharedcalendar.dto.SignUpReq;
+import study.sharedcalendar.dto.User;
 
 @Mapper
 public interface UserMapper {
-    int createUser(SignUpReq signUpReq);
+	int createUser(SignUpReq signUpReq);
 
-    boolean userIdExist(String userId);
+	boolean userIdExist(String userId);
 
-    User findLoginUser(LoginReq loginReq);
+	User findLoginUser(LoginReq loginReq);
 
-    void incrementLoginTryCount(int id);
+	void incrementLoginTryCount(int id);
 
-    void initLoginTryCount(int id);
+	void initLoginTryCount(int id);
 
-    int getPasswordDateDiff(int id);
+	int getPasswordDateDiff(int id);
+
 }
