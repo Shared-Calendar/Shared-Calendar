@@ -25,7 +25,7 @@ public class UserController {
 	private final UserService userService;
 	private final LoginService loginService;
 
-	@PostMapping
+	@PostMapping("/sign-up")
 	public void signUp(@RequestBody @Valid SignUpReq signUpReq) {
 		userService.signUp(signUpReq);
 	}
@@ -39,8 +39,13 @@ public class UserController {
 		userService.userIdDuplicationCheck(userId);
 	}
 
-	@GetMapping("/login")
+	@PostMapping("/login")
 	public void login(@RequestBody @Valid LoginReq loginReq) {
 		loginService.login(loginReq);
+	}
+
+	@PostMapping("/logout")
+	public void signOut() {
+		loginService.logout();
 	}
 }
