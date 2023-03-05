@@ -29,16 +29,9 @@ public class MailService {
 		log.info("인증 코드 길이 ={}", mailConstant.AUTH_CODE_LENGTH);
 		log.info("인증 코드={}", authCode);
 
-		MimeMessage mail = mailSender.createMimeMessage();
-		String mailContent = "<h1>[이메일 인증]</h1>"
-			+ "<br>"
-			+ "<h3>이메일 인증 번호 : " + authCode + "</h3>";
+		String mailContent = createAuthMailContent(authCode);
+		sendEmail("회원가입 이메일 인증", mailContent, email);
 
-		mail.setSubject("회원가입 이메일 인증 ", "utf-8");
-		mail.setText(mailContent, "utf-8", "html");
-		mail.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-		log.info("인증 이메일 설정 완료");
-		mailSender.send(mail);
 		redisService.setDataExpire(email, authCode, mailConstant.EXPIRE_TIME);
 	}
 
@@ -59,6 +52,21 @@ public class MailService {
 		}
 
 		return buffer.toString();
+	}
+
+	private String createAuthMailContent(String authCode) {
+		return "<h1>[이메일 인증]</h1>"
+			+ "<br>"
+			+ "<h3>이메일 인증 번호 : " + authCode + "</h3>";
+	}
+
+	private void sendEmail(String subject, String mailContent, String email) throws MessagingException {
+		MimeMessage mail = mailSender.createMimeMessage();
+		mail.setSubject(subject, "utf-8");
+		mail.setText(mailContent, "utf-8", "html");
+		mail.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+		log.info("인증 이메일 설정 완료");
+		mailSender.send(mail);
 	}
 
 }

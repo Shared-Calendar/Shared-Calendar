@@ -11,22 +11,19 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.RequiredArgsConstructor;
-import study.sharedcalendar.constant.UserConstant;
+import study.sharedcalendar.constant.LoginConstant;
 import study.sharedcalendar.exception.NoMatchedUserException;
-import study.sharedcalendar.service.UserService;
 
 @Component
 @RequiredArgsConstructor
 public class AutoLoginInterceptor implements HandlerInterceptor {
-
-	private final UserService userService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws
 		Exception {
 		HttpSession httpSession = request.getSession(false);
 		if (httpSession != null) {
-			Integer user = (Integer)httpSession.getAttribute(UserConstant.SESSION_ID);
+			Integer user = (Integer)httpSession.getAttribute(LoginConstant.SESSION_ID);
 			if (user != null) {
 				return true;
 			}
