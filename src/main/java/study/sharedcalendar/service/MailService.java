@@ -1,12 +1,11 @@
 package study.sharedcalendar.service;
 
-import java.util.Random;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -42,16 +41,7 @@ public class MailService {
 	}
 
 	private String createAuthCode(int size) {
-		Random random = new Random();
-		StringBuffer buffer = new StringBuffer();
-		int num = 0;
-
-		while (buffer.length() < size) {
-			num = random.nextInt(10);
-			buffer.append(num);
-		}
-
-		return buffer.toString();
+		return RandomStringUtils.randomNumeric(size);
 	}
 
 	private String createAuthMailContent(String authCode) {
@@ -65,7 +55,7 @@ public class MailService {
 		mail.setSubject(subject, "utf-8");
 		mail.setText(mailContent, "utf-8", "html");
 		mail.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-		log.info("인증 이메일 설정 완료");
+		log.info("이메일 설정 완료");
 		mailSender.send(mail);
 	}
 
