@@ -12,7 +12,6 @@ import study.sharedcalendar.interceptor.AutoLoginInterceptor;
 @EnableWebMvc
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
-
 	private final AutoLoginInterceptor autoLoginInterceptor;
 
 	@Override
@@ -20,7 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addInterceptor(autoLoginInterceptor)
 			.order(1)
 			.addPathPatterns("/*")
-			.excludePathPatterns("/users/sign-up", "/users/sign-in");
+			.excludePathPatterns("/users/sign-up", "/users/login");
 	}
-
 }

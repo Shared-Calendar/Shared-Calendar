@@ -1,12 +1,15 @@
 package study.sharedcalendar.service;
 
 import static study.sharedcalendar.constant.ErrorCode.*;
+import static study.sharedcalendar.constant.UserConstant.*;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import study.sharedcalendar.dto.LoginReq;
 import study.sharedcalendar.dto.SignUpReq;
+import study.sharedcalendar.dto.User;
 import study.sharedcalendar.exception.DuplicateException;
 import study.sharedcalendar.exception.NoMatchedUserException;
 import study.sharedcalendar.mapper.UserMapper;
@@ -18,7 +21,7 @@ public class UserService {
 	private final EncryptionService encryptionService;
 
 	private String createInviteCode() {
-		return RandomStringUtils.randomAlphabetic(12);
+		return RandomStringUtils.randomAlphabetic(USER_INVITE_CODE_SIZE);
 	}
 
 	public void signUp(SignUpReq signUpReq) {
@@ -52,7 +55,27 @@ public class UserService {
 		if (id == null) {
 			throw new NoMatchedUserException(NO_MATCHING_USER_ID);
 		}
+
 		return id;
 	}
 
+	public void modifyInviteUrlCode(int id) {
+		userMapper.modifyInviteUrlCode(id, createInviteCode());
+	}
+
+	public User findLoginUser(LoginReq loginReq) {
+		return userMapper.findLoginUser(loginReq);
+	}
+
+	public void incrementLoginTryCount(int id) {
+		userMapper.incrementLoginTryCount(id);
+	}
+
+	public void initLoginTryCount(int id) {
+		userMapper.initLoginTryCount(id);
+	}
+
+	public int getPasswordDateDiff(int id) {
+		return userMapper.getPasswordDateDiff(id);
+	}
 }

@@ -6,25 +6,27 @@
 
     <select id="getInviteUrlCode" resultType="String">
         SELECT invite_url_code
-        FROM USER_TB
+        FROM USER
         WHERE id = #{id};
     </select>
 
     <select id="getConnection" resultType="study.sharedcalendar.dto.Connection">
         SELECT id, connector_id, connectee_id, activate
-        FROM CONNECTOR_TB
+        FROM CONNECTOR
         WHERE (connector_id = #{connectorId} AND connectee_id = #{connecteeId})
            OR (connectee_id = #{connectorId} AND connector_id = #{connecteeId});
     </select>
 
     <update id="modifyActivate">
-        UPDATE CONNECTOR_TB
+        UPDATE CONNECTOR
         SET activate = #{status}
         WHERE id = #{id};
     </update>
 
     <insert id="createConnection">
-        INSERT INTO CONNECTOR_TB (connector_id, connectee_id, last_visited_at, activate, created_at, updated_at)
+        INSERT INTO CONNECTOR (connector_id, connectee_id, last_visited_at, activate, created_at,
+                               updated_at)
         values (#{connectorId}, #{connecteeId}, NOW(), 1, NOW(), NOW())
     </insert>
+
 </mapper>

@@ -1,5 +1,7 @@
 package study.sharedcalendar.service;
 
+import static study.sharedcalendar.constant.UserConstant.*;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -12,27 +14,29 @@ import study.sharedcalendar.mapper.ConnectionMapper;
 @Service
 @RequiredArgsConstructor
 public class ConnectionService {
-
 	private final LoginService loginService;
-
 	private final ConnectionMapper connectionMapper;
 	private final UserService userService;
 
 	public String getInviteUrl() {
-		int loginUserId = loginService.getLoginSession();
-		StringBuilder inviteUrl = new StringBuilder();
-		inviteUrl.append("http://localhost:8080/connections/create/")
-			.append(connectionMapper.getInviteUrlCode(loginUserId));
-		return inviteUrl.toString();
+		int loginId = loginService.getLoginSession();
+		return (USER_INVITE_URL + connectionMapper.getInviteUrlCode(loginId));
+	}
+
+	public void changeInviteCode() {
+		int loginId = loginService.getLoginSession();
+		userService.modifyInviteUrlCode(loginId);
 	}
 
 	public void createConnection(String connectorCode) {
-		int loginUserId = loginService.getLoginSession();
+		int loginId = loginService.getLoginSession();
 		int connectorId = userService.getIdByInviteCode(connectorCode);
-		if (connectionMapper.getInviteUrlCode(loginUserId).equals(connectorCode)) {
+
+		if (connectionMapper.getInviteUrlCode(loginId).equals(connectorCode)) {
 			throw new AuthorizationException(ErrorCode.SELF_INVITATION);
 		}
-		Connection connection = connectionMapper.getConnection(loginUserId, connectorId);
+
+		Connection connection = connectionMapper.getConnection(loginId, connectorId);
 		if (connection != null) {
 			if (connection.isActivate()) {
 				throw new DuplicateException(ErrorCode.CONNECT_DUPLICATE);
@@ -40,6 +44,7 @@ public class ConnectionService {
 				connectionMapper.modifyActivate(connection.getId(), true);
 			}
 		}
-		connectionMapper.createConnection(loginUserId, connectorId);
+
+		connectionMapper.createConnection(loginId, connectorId);
 	}
 }
