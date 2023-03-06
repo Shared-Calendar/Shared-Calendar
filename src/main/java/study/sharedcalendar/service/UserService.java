@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import study.sharedcalendar.dto.LoginReq;
 import study.sharedcalendar.dto.SignUpReq;
 import study.sharedcalendar.dto.User;
+import study.sharedcalendar.exception.AuthorizationException;
 import study.sharedcalendar.exception.DuplicateException;
 import study.sharedcalendar.mapper.UserMapper;
 
@@ -16,10 +17,18 @@ import study.sharedcalendar.mapper.UserMapper;
 public class UserService {
 	private final UserMapper userMapper;
 	private final EncryptionService encryptionService;
+	private final RedisService redisService;
 
 	public void signUp(SignUpReq signUpReq) {
 		if (userIdExist(signUpReq.getUserId())) {
 			throw new DuplicateException(ID_DUPLICATE);
+		}
+
+		if (emailExist(signUpReq.getEmail())) {
+			throw new DuplicateException(EMAIL_DUPLICATE);
+		}
+		if (!emailAuthenticationCheck(signUpReq.getEmail())) {
+			throw new AuthorizationException(NOT_AUTHENTIC_EMAIL);
 		}
 
 		String encryptedPassword = encryptionService.encrypt(signUpReq.getPassword());
@@ -38,8 +47,12 @@ public class UserService {
 		}
 	}
 
-	public boolean userIdExist(String userId) {
+	private boolean userIdExist(String userId) {
 		return userMapper.userIdExist(userId);
+	}
+
+	private boolean emailExist(String email) {
+		return userMapper.emailExist(email);
 	}
 
 	public User findLoginUser(LoginReq loginReq) {
@@ -56,6 +69,15 @@ public class UserService {
 
 	public int getPasswordDateDiff(int id) {
 		return userMapper.getPasswordDateDiff(id);
+	}
+
+	private boolean emailAuthenticationCheck(String email) {
+		String value = redisService.getData(email);
+
+		if (value != null && value.equals("authentic")) {
+			return true;
+		}
+		return false;
 	}
 
 }

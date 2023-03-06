@@ -12,6 +12,8 @@ public interface UserMapper {
 
 	boolean userIdExist(String userId);
 
+	boolean emailExist(String email);
+
 	User findLoginUser(LoginReq loginReq);
 
 	void incrementLoginTryCount(int id);

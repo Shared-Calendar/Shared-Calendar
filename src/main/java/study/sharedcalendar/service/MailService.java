@@ -38,6 +38,7 @@ public class MailService {
 		if (!redisService.checkData(email, authCode)) {
 			throw new NoMatchedKeyException(ErrorCode.NO_MATCHING_AUTH_CODE);
 		}
+		redisService.setData(email, "authentic");
 	}
 
 	private String createAuthCode(int size) {
