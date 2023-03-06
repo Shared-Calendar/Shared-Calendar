@@ -9,14 +9,15 @@ import study.sharedcalendar.dto.Connection;
 
 @Mapper
 public interface ConnectionMapper {
-
 	String getInviteUrlCode(int id);
 
-	Connection getConnection(@Param("connectorId") int connectorId, @Param("connecteeId") int connecteeId);
+	Connection getConnection(@Param("connectorId") int connectorId,
+		@Param("connecteeId") int connecteeId);
 
 	void modifyActivate(int id, boolean status);
 
-	void createConnection(@Param("connectorId") int connectorId, @Param("connecteeId") int connecteeId);
+	void createConnection(@Param("connectorId") int connectorId,
+		@Param("connecteeId") int connecteeId);
 
 	int countConnection(int userId);
 
@@ -25,5 +26,4 @@ public interface ConnectionMapper {
 	List<String> findAllConnection(int userId);
 
 	List<String> findRecentConnection(int userId);
-
 }

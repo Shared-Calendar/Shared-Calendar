@@ -24,7 +24,8 @@
     </update>
 
     <insert id="createConnection">
-        INSERT INTO CONNECTOR (connector_id, connectee_id, last_visited_at, activate, created_at, updated_at)
+        INSERT INTO CONNECTOR (connector_id, connectee_id, last_visited_at, activate, created_at,
+                               updated_at)
         values (#{connectorId}, #{connecteeId}, NOW(), 1, NOW(), NOW())
     </insert>
 

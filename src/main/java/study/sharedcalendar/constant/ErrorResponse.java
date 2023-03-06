@@ -1,16 +1,15 @@
 package study.sharedcalendar.constant;
 
-import org.springframework.http.HttpStatus;
-
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class ErrorResponse {
-	private HttpStatus status;
-	private String message;
+    private HttpStatus status;
+    private String message;
 
-	public ErrorResponse(HttpStatus status, String message) {
-		this.status = status;
-		this.message = message;
-	}
+    public ErrorResponse(HttpStatus status, String message) {
+        this.status = status;
+        this.message = message;
+    }
 }

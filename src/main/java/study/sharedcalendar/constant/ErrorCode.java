@@ -14,6 +14,7 @@ public enum ErrorCode {
 	INACTIVE_USER(HttpStatus.FORBIDDEN, "휴면 계정입니다."),
 	EXCEEDED_LOGIN_ATTEMPTS(HttpStatus.FORBIDDEN, "로그인 횟수가 초과했습니다. 비밀번호를 재설정해주세요."),
 	EXCEEDED_PASSWORD_VALIDITY_PERIOD(HttpStatus.FORBIDDEN, "비밀번호 변경 주기가 지났습니다. 비밀번호를 재설정해주세요."),
+	SELF_INVITATION(HttpStatus.FORBIDDEN, "자기 자신에게는 초대를 받을 수 없습니다."),
 	SELF_CONNECTION(HttpStatus.FORBIDDEN, "자기 자신에게는 초대를 받을 수 없습니다."),
 	SELF_DISCONNECTION(HttpStatus.FORBIDDEN, "자기 자신에게는 삭제를 할 수 없습니다."),
 	/* 404 NOT_FOUND */

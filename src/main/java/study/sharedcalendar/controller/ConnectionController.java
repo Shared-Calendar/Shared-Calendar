@@ -16,12 +16,17 @@ import study.sharedcalendar.service.ConnectionService;
 public class ConnectionController {
 	private final ConnectionService connectionService;
 
-	@PostMapping("/get-url")
+	@PostMapping("/url")
 	public String getInviteUrl() {
 		return connectionService.getInviteUrl();
 	}
 
-	@PostMapping("create/{connectorCode}")
+	@PostMapping("/change-code")
+	public void changeInviteUrlCode() {
+		connectionService.changeInviteCode();
+	}
+
+	@PostMapping("{connectorCode}")
 	public void createConnection(@PathVariable String connectorCode) {
 		connectionService.createConnection(connectorCode);
 	}
@@ -50,5 +55,4 @@ public class ConnectionController {
 	public List<String> findRecentConnection() {
 		return connectionService.findRecentConnection();
 	}
-
 }

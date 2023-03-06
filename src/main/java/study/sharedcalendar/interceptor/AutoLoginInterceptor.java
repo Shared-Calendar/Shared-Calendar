@@ -18,15 +18,15 @@ import study.sharedcalendar.service.UserService;
 @Component
 @RequiredArgsConstructor
 public class AutoLoginInterceptor implements HandlerInterceptor {
-
 	private final UserService userService;
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+		Object handler) throws
 		Exception {
 		HttpSession httpSession = request.getSession(false);
 		if (httpSession != null) {
-			Integer user = (Integer)httpSession.getAttribute(UserConstant.SESSION_ID);
+			Integer user = (Integer)httpSession.getAttribute(UserConstant.LOGIN_SESSION_ID);
 			if (user != null) {
 				return true;
 			}
@@ -42,7 +42,8 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
 	}
 
 	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
+		Object handler,
 		Exception ex) throws Exception {
 		HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
 	}
