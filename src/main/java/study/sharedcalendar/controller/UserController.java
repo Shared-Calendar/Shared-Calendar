@@ -34,7 +34,7 @@ public class UserController {
 		userService.signUp(signUpReq);
 	}
 
-	@GetMapping
+	@GetMapping("/id-check")
 	public void idCheck(
 		@RequestParam
 		@Pattern(message = "잘못된 아이디 형식입니다."
