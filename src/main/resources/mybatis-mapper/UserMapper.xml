@@ -32,6 +32,14 @@
                    );
     </select>
 
+    <select id="emailExist" resultType="boolean">
+        SELECT EXISTS(
+                       SELECT *
+                       FROM USER
+                       WHERE email = #{email}
+                   );
+    </select>
+
     <select id="findLoginUser" resultType="study.sharedcalendar.dto.User">
         SELECT id
              , user_id

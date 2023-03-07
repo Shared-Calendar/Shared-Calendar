@@ -1,5 +1,7 @@
 package study.sharedcalendar.service;
 
+import static study.sharedcalendar.constant.ErrorCode.*;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import study.sharedcalendar.constant.ErrorCode;
 import study.sharedcalendar.constant.MailConstant;
+import study.sharedcalendar.exception.DuplicateException;
 import study.sharedcalendar.exception.NoMatchedKeyException;
 
 @Slf4j
@@ -22,8 +25,13 @@ public class MailService {
 	private final JavaMailSender mailSender;
 	private final RedisService redisService;
 	private final MailConstant mailConstant;
+	private final UserService userService;
 
 	public void sendAuthEmail(String email) throws MessagingException {
+		if (userService.emailExist(email)) {
+			throw new DuplicateException(EMAIL_DUPLICATE);
+		}
+
 		String authCode = createAuthCode(mailConstant.AUTH_CODE_LENGTH);
 		log.info("인증 코드 길이 ={}", mailConstant.AUTH_CODE_LENGTH);
 		log.info("인증 코드={}", authCode);
@@ -38,6 +46,7 @@ public class MailService {
 		if (!redisService.checkData(email, authCode)) {
 			throw new NoMatchedKeyException(ErrorCode.NO_MATCHING_AUTH_CODE);
 		}
+		redisService.setData("authentic" + email, "authentic");
 	}
 
 	private String createAuthCode(int size) {
