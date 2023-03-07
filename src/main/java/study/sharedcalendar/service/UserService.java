@@ -24,10 +24,7 @@ public class UserService {
 			throw new DuplicateException(ID_DUPLICATE);
 		}
 
-		if (emailExist(signUpReq.getEmail())) {
-			throw new DuplicateException(EMAIL_DUPLICATE);
-		}
-		if (!emailAuthenticationCheck(signUpReq.getEmail())) {
+		if (!emailAuthenticationCheck("authentic" + signUpReq.getEmail())) {
 			throw new AuthorizationException(NOT_AUTHENTIC_EMAIL);
 		}
 
@@ -39,6 +36,7 @@ public class UserService {
 			.build();
 
 		userMapper.createUser(signUpSignUpReq);
+		redisService.deleteData("authentic" + signUpReq.getEmail());
 	}
 
 	public void userIdDuplicationCheck(String userId) {
@@ -51,7 +49,7 @@ public class UserService {
 		return userMapper.userIdExist(userId);
 	}
 
-	private boolean emailExist(String email) {
+	public boolean emailExist(String email) {
 		return userMapper.emailExist(email);
 	}
 
