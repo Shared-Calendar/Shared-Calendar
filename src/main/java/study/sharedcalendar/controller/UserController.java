@@ -7,6 +7,7 @@ import javax.validation.constraints.Pattern;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,7 +60,27 @@ public class UserController {
 	}
 
 	@PostMapping("/email-auth")
-	public void sendEmailAuthCode(@RequestParam @Email String email, @RequestParam String authCode) {
+	public void checkEmailAuthCode(@RequestParam @Email String email, @RequestParam String authCode) {
 		mailService.checkEmailAuthCode(email, authCode);
+	}
+
+	@GetMapping("/find-id")
+	public String findUserIdByEmail(@RequestParam @Email String email) {
+		return userService.findUserIdByEmail(email);
+	}
+
+	@GetMapping("/find-pwd")
+	public void findPwdByEmail(@RequestParam @Email String email) throws MessagingException {
+		mailService.findPwdByEmail(email);
+	}
+
+	@GetMapping("/pwd-email-auth")
+	public void checkPwdEmailAuthCode(@RequestParam @Email String email, @RequestParam String authCode) {
+		mailService.checkPwdEmailAuthCode(email, authCode);
+	}
+
+	@PostMapping("/reset/{email}/{password}")
+	public void resetPassword(@PathVariable String email, @PathVariable String password) {
+		userService.resetPassword(email, password);
 	}
 }
