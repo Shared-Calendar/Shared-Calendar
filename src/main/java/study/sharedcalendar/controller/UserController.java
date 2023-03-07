@@ -1,6 +1,8 @@
 package study.sharedcalendar.controller;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import study.sharedcalendar.dto.LoginReq;
 import study.sharedcalendar.dto.SignUpReq;
 import study.sharedcalendar.service.LoginService;
+import study.sharedcalendar.service.MailService;
 import study.sharedcalendar.service.UserService;
 
 @RestController
@@ -24,6 +27,7 @@ import study.sharedcalendar.service.UserService;
 public class UserController {
 	private final UserService userService;
 	private final LoginService loginService;
+	private final MailService mailService;
 
 	@PostMapping("/sign-up")
 	public void signUp(@RequestBody @Valid SignUpReq signUpReq) {
@@ -47,5 +51,15 @@ public class UserController {
 	@PostMapping("/logout")
 	public void signOut() {
 		loginService.logout();
+	}
+
+	@PostMapping("/email")
+	public void sendAuthEmail(@RequestParam @Email String email) throws MessagingException {
+		mailService.sendAuthEmail(email);
+	}
+
+	@PostMapping("/email-auth")
+	public void sendEmailAuthCode(@RequestParam @Email String email, @RequestParam String authCode) {
+		mailService.checkEmailAuthCode(email, authCode);
 	}
 }
