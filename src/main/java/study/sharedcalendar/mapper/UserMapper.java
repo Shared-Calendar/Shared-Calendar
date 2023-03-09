@@ -26,4 +26,6 @@ public interface UserMapper {
 	Integer getIdByInviteCode(String inviteUrlCode);
 
 	void modifyInviteUrlCode(@Param("id") int id, @Param("inviteUrlCode") String inviteUrlCode);
+
+	void deleteUser(int id);
 }

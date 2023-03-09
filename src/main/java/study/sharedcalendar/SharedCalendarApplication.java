@@ -6,11 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 
+import study.sharedcalendar.constant.ConnectionConstant;
 import study.sharedcalendar.constant.UserConstant;
 
 @MapperScan
 @EnableCaching
-@EnableConfigurationProperties(UserConstant.class)
+@EnableConfigurationProperties({UserConstant.class, ConnectionConstant.class})
 @SpringBootApplication
 public class SharedCalendarApplication {
 

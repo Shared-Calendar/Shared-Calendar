@@ -4,6 +4,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,5 +48,11 @@ public class UserController {
 	@PostMapping("/logout")
 	public void signOut() {
 		loginService.logout();
+	}
+
+	@DeleteMapping()
+	public void deleteAccount(@RequestBody @Valid LoginReq loginReq) {
+		loginService.logout();
+		userService.deleteUser(loginReq);
 	}
 }

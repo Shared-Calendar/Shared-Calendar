@@ -51,16 +51,16 @@ create table CONNECTOR
 );
 
 alter table NOTIFICATION
-    add foreign key (user_id) references USER (id);
+    add foreign key (user_id) references USER (id) ON DELETE CASCADE;
 alter table NOTIFICATION
-    add foreign key (target_user_id) references USER (id);
+    add foreign key (target_user_id) references USER (id) ON DELETE CASCADE;
 alter table NOTIFICATION
-    add foreign key (shared_schedule_id) references SHARED_SCHEDULE (id);
+    add foreign key (shared_schedule_id) references SHARED_SCHEDULE (id) ON DELETE CASCADE;
 alter table SHARED_SCHEDULE
-    add foreign key (user_id) references USER (id);
+    add foreign key (user_id) references USER (id) ON DELETE CASCADE;
 alter table SHARED_SCHEDULE
-    add foreign key (connectee_id) references USER (id);
+    add foreign key (connectee_id) references USER (id) ON DELETE CASCADE;
 alter table CONNECTOR
-    add foreign key (connector_id) references USER (id);
+    add foreign key (connector_id) references USER (id) ON DELETE CASCADE;
 alter table CONNECTOR
-    add foreign key (connectee_id) references USER (id);
+    add foreign key (connectee_id) references USER (id) ON DELETE CASCADE;
