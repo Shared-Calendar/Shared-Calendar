@@ -21,9 +21,7 @@ public interface ConnectionMapper {
 
 	int countConnection(int userId);
 
-	List<String> findTenConnection(int userId);
-
-	List<String> findAllConnection(int userId);
+	List<String> findConnection(@Param("userId") int userId, @Param("lastViewId") int lastViewId);
 
 	List<String> findRecentConnection(int userId);
 }

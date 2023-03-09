@@ -2,6 +2,8 @@ package study.sharedcalendar.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,7 @@ import study.sharedcalendar.service.ConnectionService;
 public class ConnectionController {
 	private final ConnectionService connectionService;
 
-	@PostMapping("/url")
+	@GetMapping("/url")
 	public String getInviteUrl() {
 		return connectionService.getInviteUrl();
 	}
@@ -31,27 +33,22 @@ public class ConnectionController {
 		connectionService.createConnection(connectorCode);
 	}
 
-	@PostMapping("/count")
+	@GetMapping("/count")
 	public int countConnection() {
 		return connectionService.countConnection();
 	}
 
-	@PostMapping("/delete/{connectorUserId}")
+	@DeleteMapping("/{connectorUserId}")
 	public void deleteConnection(@PathVariable String connectorUserId) {
 		connectionService.deleteConnection(connectorUserId);
 	}
 
-	@PostMapping("/find")
-	public List<String> findTenConnection() {
-		return connectionService.findTenConnection();
+	@GetMapping()
+	public List<String> findConnection() {
+		return connectionService.findConnection();
 	}
 
-	@PostMapping("/find-all")
-	public List<String> findAllConnection() {
-		return connectionService.findAllConnection();
-	}
-
-	@PostMapping("/find-recent")
+	@GetMapping("/recent")
 	public List<String> findRecentConnection() {
 		return connectionService.findRecentConnection();
 	}

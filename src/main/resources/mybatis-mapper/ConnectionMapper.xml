@@ -30,41 +30,35 @@
     </insert>
 
     <select id="countConnection" resultType="int">
-        SELECT count(*)
+        SELECT COUNT(*)
         FROM CONNECTOR
         WHERE (connector_id = #{userId} OR connectee_id = #{userId})
           AND (CONNECTOR.activate = 1);
     </select>
 
-    <select id="findTenConnection" resultType="String">
-        SELECT USER.user_id
+    <select id="findConnection" resultType="String">
+        SELECT "USER".user_id
         FROM CONNECTOR
-                 JOIN USER ON CONNECTOR.connector_id = USER.id OR CONNECTOR.connectee_id = USER.id
-        WHERE ((CONNECTOR.connector_id = #{userId} OR CONNECTOR.connectee_id = #{userId}) AND
-               USER.id
+                 JOIN USER
+                      ON CONNECTOR.connector_id = "USER".id OR CONNECTOR.connectee_id = "USER".id
+        WHERE ((CONNECTOR.connector_id = #{userId} OR CONNECTOR.connectee_id = #{userId})
+            AND "USER".id
             != #{userId}
-          AND CONNECTOR.activate = 1 ) LIMIT 10;
-
-    </select>
-
-    <select id="findAllConnection" resultType="String">
-        SELECT USER.user_id
-        FROM CONNECTOR
-                 JOIN USER ON CONNECTOR.connector_id = USER.id OR CONNECTOR.connectee_id = USER.id
-        WHERE (CONNECTOR.connector_id = #{userId} OR CONNECTOR.connectee_id = #{userId})
-          AND USER.id != #{userId}
-          AND
-            CONNECTOR.activate = 1;
+          AND CONNECTOR.activate = 1 )
+          AND ( CONNECTOR.id
+            > #{lastViewId} )
+        ORDER BY CONNECTOR.id ASC
+            LIMIT 10;
     </select>
 
     <select id="findRecentConnection" resultType="String">
-        SELECT USER.user_id
+        SELECT "USER".user_id
         FROM CONNECTOR
-                 JOIN USER ON CONNECTOR.connector_id = USER.id OR CONNECTOR.connectee_id = USER.id
+                 JOIN USER
+                      ON CONNECTOR.connector_id = "USER".id OR CONNECTOR.connectee_id = "USER".id
         WHERE (CONNECTOR.connector_id = #{userId} OR CONNECTOR.connectee_id = #{userId})
-          AND USER.id != #{userId}
-          AND
-            CONNECTOR.activate = 1
+          AND "USER".id != #{userId}
+          AND CONNECTOR.activate = 1
         ORDER BY CONNECTOR.last_visited_at DESC
             LIMIT 3;
     </select>

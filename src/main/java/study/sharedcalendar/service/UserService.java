@@ -1,7 +1,7 @@
 package study.sharedcalendar.service;
 
+import static study.sharedcalendar.constant.ConnectionConstant.*;
 import static study.sharedcalendar.constant.ErrorCode.*;
-import static study.sharedcalendar.constant.UserConstant.*;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
