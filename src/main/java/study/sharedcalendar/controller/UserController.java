@@ -7,7 +7,6 @@ import javax.validation.constraints.Pattern;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,8 +78,8 @@ public class UserController {
 		mailService.checkPwdEmailAuthCode(email, authCode);
 	}
 
-	@PostMapping("/reset/{email}/{password}")
-	public void resetPassword(@PathVariable String email, @PathVariable String password) {
+	@PostMapping("/reset")
+	public void resetPassword(@RequestParam String email, @RequestParam String password) {
 		userService.resetPassword(email, password);
 	}
 }

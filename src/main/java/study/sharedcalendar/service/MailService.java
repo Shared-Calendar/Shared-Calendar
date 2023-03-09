@@ -33,8 +33,8 @@ public class MailService {
 		}
 
 		String authCode = createAuthCode(AUTH_CODE_LENGTH);
-		log.info("인증 코드 길이 ={}", AUTH_CODE_LENGTH);
-		log.info("인증 코드={}", authCode);
+		log.debug("인증 코드 길이 ={}", AUTH_CODE_LENGTH);
+		log.debug("인증 코드={}", authCode);
 
 		String mailContent = createAuthMailContent(authCode);
 		sendEmail("회원가입 이메일 인증", mailContent, email);
@@ -64,7 +64,7 @@ public class MailService {
 		mail.setSubject(subject, "utf-8");
 		mail.setText(mailContent, "utf-8", "html");
 		mail.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-		log.info("이메일 설정 완료");
+		log.debug("이메일 설정 완료");
 		mailSender.send(mail);
 	}
 
@@ -81,8 +81,8 @@ public class MailService {
 		}
 
 		String authCode = createAuthCode(AUTH_CODE_LENGTH);
-		log.info("인증 코드 길이 ={}", AUTH_CODE_LENGTH);
-		log.info("인증 코드={}", authCode);
+		log.debug("인증 코드 길이 ={}", AUTH_CODE_LENGTH);
+		log.debug("인증 코드={}", authCode);
 
 		String mailContent = createAuthMailContent(authCode);
 		sendEmail("비밀번호 재설정 이메일 인증", mailContent, email);
@@ -94,6 +94,6 @@ public class MailService {
 		if (!redisService.checkData(email, authCode)) {
 			throw new NoMatchedKeyException(ErrorCode.NO_MATCHING_AUTH_CODE);
 		}
-		redisService.setData("pwd" + email, "authentic");
+		redisService.setData("pwd " + email, "authentic");
 	}
 }

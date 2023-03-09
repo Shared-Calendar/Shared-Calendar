@@ -39,7 +39,7 @@ public class UserService {
 			.build();
 
 		userMapper.createUser(signUpSignUpReq);
-		redisService.deleteData("authentic" + signUpReq.getEmail());
+		redisService.deleteData("authentic " + signUpReq.getEmail());
 	}
 
 	public void userIdDuplicationCheck(String userId) {
@@ -94,6 +94,6 @@ public class UserService {
 
 		String encryptedPassword = encryptionService.encrypt(password);
 		userMapper.resetPassword(email, encryptedPassword);
-		redisService.deleteData("pwd" + email);
+		redisService.deleteData("pwd " + email);
 	}
 }
