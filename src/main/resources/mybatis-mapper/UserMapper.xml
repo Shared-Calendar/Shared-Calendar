@@ -63,8 +63,20 @@
     </update>
 
     <select id="getPasswordDateDiff" resultType="int">
-        SELECT DATEDIFF(dd, password_date, NOW()) as DATEDIFF
+        SELECT DATEDIFF(day, password_date, NOW()) as DATEDIFF
         FROM USER
         WHERE id = #{id};
     </select>
+
+    <select id="findUserIdByEmail" resultType="String">
+        SELECT user_id
+        FROM USER
+        WHERE email = #{email};
+    </select>
+
+    <update id="resetPassword">
+        UPDATE USER
+        SET password = #{password}
+        WHERE email = #{email};
+    </update>
 </mapper>

@@ -5,13 +5,16 @@ import static study.sharedcalendar.constant.ErrorCode.*;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import study.sharedcalendar.dto.LoginReq;
 import study.sharedcalendar.dto.SignUpReq;
 import study.sharedcalendar.dto.User;
 import study.sharedcalendar.exception.AuthorizationException;
 import study.sharedcalendar.exception.DuplicateException;
+import study.sharedcalendar.exception.NoMatchedUserException;
 import study.sharedcalendar.mapper.UserMapper;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -36,7 +39,7 @@ public class UserService {
 			.build();
 
 		userMapper.createUser(signUpSignUpReq);
-		redisService.deleteData("authentic" + signUpReq.getEmail());
+		redisService.deleteData("authentic " + signUpReq.getEmail());
 	}
 
 	public void userIdDuplicationCheck(String userId) {
@@ -70,12 +73,27 @@ public class UserService {
 	}
 
 	private boolean emailAuthenticationCheck(String email) {
-		String value = redisService.getData(email);
-
-		if (value != null && value.equals("authentic")) {
+		if (redisService.checkData(email, "authentic"))
 			return true;
-		}
 		return false;
 	}
 
+	public String findUserIdByEmail(String email) {
+		String userId = userMapper.findUserIdByEmail(email);
+		log.info("이메일로 찾은 아이디 ={} ", userId);
+		if (userId == null) {
+			throw new NoMatchedUserException(NO_MATCHING_USER_BY_EMAIL);
+		}
+		return userId;
+	}
+
+	public void resetPassword(String email, String password) {
+		if (!emailAuthenticationCheck("pwd" + email)) {
+			throw new AuthorizationException(NOT_AUTHENTIC_EMAIL);
+		}
+
+		String encryptedPassword = encryptionService.encrypt(password);
+		userMapper.resetPassword(email, encryptedPassword);
+		redisService.deleteData("pwd " + email);
+	}
 }

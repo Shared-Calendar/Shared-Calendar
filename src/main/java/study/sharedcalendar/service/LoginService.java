@@ -1,13 +1,13 @@
 package study.sharedcalendar.service;
 
 import static study.sharedcalendar.constant.ErrorCode.*;
+import static study.sharedcalendar.constant.LoginConstant.*;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import study.sharedcalendar.constant.LoginConstant;
 import study.sharedcalendar.dto.LoginReq;
 import study.sharedcalendar.dto.User;
 import study.sharedcalendar.exception.AuthorizationException;
@@ -17,7 +17,6 @@ import study.sharedcalendar.exception.NoMatchedUserException;
 @RequiredArgsConstructor
 public class LoginService {
 	private final UserService userService;
-	private final LoginConstant loginConstant;
 	private final EncryptionService encryptionService;
 	private final HttpSession httpSession;
 
@@ -38,7 +37,7 @@ public class LoginService {
 			throw new AuthorizationException(INACTIVE_USER);
 		}
 
-		if (userService.getPasswordDateDiff(user.getId()) >= loginConstant.MAX_PASSWORD_VALIDITY_PERIOD) {
+		if (userService.getPasswordDateDiff(user.getId()) >= MAX_PASSWORD_VALIDITY_PERIOD) {
 			throw new AuthorizationException(EXCEEDED_PASSWORD_VALIDITY_PERIOD);
 		}
 
@@ -52,12 +51,12 @@ public class LoginService {
 	}
 
 	private void loginTryCountCheck(int count) {
-		if (count == loginConstant.MAX_LOGIN_TRY_COUNT) {
+		if (count == MAX_LOGIN_TRY_COUNT) {
 			throw new AuthorizationException(EXCEEDED_LOGIN_ATTEMPTS);
 		}
 	}
 
 	public void setLoginSession(int id) {
-		httpSession.setAttribute(loginConstant.SESSION_ID, id);
+		httpSession.setAttribute(SESSION_ID, id);
 	}
 }

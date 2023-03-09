@@ -22,4 +22,7 @@ public interface UserMapper {
 
 	int getPasswordDateDiff(int id);
 
+	String findUserIdByEmail(String email);
+
+	void resetPassword(String email, String password);
 }
