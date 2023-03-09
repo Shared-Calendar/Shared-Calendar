@@ -3,6 +3,7 @@ package study.sharedcalendar.controller;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import study.sharedcalendar.dto.EmailAuthCode;
 import study.sharedcalendar.dto.LoginReq;
 import study.sharedcalendar.dto.ResetPasswordReq;
 import study.sharedcalendar.dto.SignUpReq;
@@ -60,23 +62,23 @@ public class UserController {
 	}
 
 	@PostMapping("/email-auth")
-	public void checkEmailAuthCode(@RequestParam @Email String email, @RequestParam String authCode) {
-		mailService.checkEmailAuthCode(email, authCode);
+	public void checkEmailAuthCode(@RequestBody @Valid EmailAuthCode emailAuthCode) {
+		mailService.checkEmailAuthCode(emailAuthCode.getEmail(), emailAuthCode.getAuthCode());
 	}
 
 	@GetMapping("/find-id")
-	public String findUserIdByEmail(@RequestParam @Email String email) {
+	public String findUserIdByEmail(@RequestParam @Email @NotBlank String email) {
 		return userService.findUserIdByEmail(email);
 	}
 
 	@GetMapping("/find-pwd")
-	public void findPwdByEmail(@RequestParam @Email String email) throws MessagingException {
+	public void findPwdByEmail(@RequestParam @Email @NotBlank String email) throws MessagingException {
 		mailService.findPwdByEmail(email);
 	}
 
 	@GetMapping("/pwd-email-auth")
-	public void checkPwdEmailAuthCode(@RequestParam @Email String email, @RequestParam String authCode) {
-		mailService.checkPwdEmailAuthCode(email, authCode);
+	public void checkPwdEmailAuthCode(@RequestBody @Valid EmailAuthCode emailAuthCode) {
+		mailService.checkPwdEmailAuthCode(emailAuthCode.getEmail(), emailAuthCode.getAuthCode());
 	}
 
 	@PostMapping("/reset")
