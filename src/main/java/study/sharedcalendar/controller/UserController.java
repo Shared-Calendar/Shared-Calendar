@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import study.sharedcalendar.dto.LoginReq;
+import study.sharedcalendar.dto.ResetPasswordReq;
 import study.sharedcalendar.dto.SignUpReq;
 import study.sharedcalendar.service.LoginService;
 import study.sharedcalendar.service.MailService;
@@ -79,7 +80,7 @@ public class UserController {
 	}
 
 	@PostMapping("/reset")
-	public void resetPassword(@RequestParam String email, @RequestParam String password) {
-		userService.resetPassword(email, password);
+	public void resetPassword(@RequestBody @Valid ResetPasswordReq resetPasswordReq) {
+		userService.resetPassword(resetPasswordReq.getEmail(), resetPasswordReq.getPassword());
 	}
 }

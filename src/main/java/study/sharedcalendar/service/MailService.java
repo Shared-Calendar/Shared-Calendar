@@ -46,7 +46,7 @@ public class MailService {
 		if (!redisService.checkData(email, authCode)) {
 			throw new NoMatchedKeyException(ErrorCode.NO_MATCHING_AUTH_CODE);
 		}
-		redisService.setData("authentic" + email, "authentic");
+		redisService.setData("authentic " + email, "authentic");
 	}
 
 	private String createAuthCode(int size) {
@@ -76,10 +76,6 @@ public class MailService {
 	}
 
 	public void sendPwdAuthEmail(String email) throws MessagingException {
-		if (!userService.emailExist(email)) {
-			throw new NoMatchedUserException(NO_MATCHING_USER_BY_EMAIL);
-		}
-
 		String authCode = createAuthCode(AUTH_CODE_LENGTH);
 		log.debug("인증 코드 길이 ={}", AUTH_CODE_LENGTH);
 		log.debug("인증 코드={}", authCode);
