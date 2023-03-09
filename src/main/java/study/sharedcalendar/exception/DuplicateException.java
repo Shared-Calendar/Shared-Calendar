@@ -7,5 +7,5 @@ import study.sharedcalendar.constant.ErrorCode;
 @Getter
 @RequiredArgsConstructor
 public class DuplicateException extends IllegalArgumentException {
-	private final ErrorCode errorCode;
+    private final ErrorCode errorCode;
 }

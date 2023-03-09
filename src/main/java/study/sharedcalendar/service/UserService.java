@@ -1,7 +1,7 @@
 package study.sharedcalendar.service;
 
+import static study.sharedcalendar.constant.ConnectionConstant.*;
 import static study.sharedcalendar.constant.ErrorCode.*;
-import static study.sharedcalendar.constant.UserConstant.*;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
@@ -73,6 +73,14 @@ public class UserService {
 
 	public void initLoginTryCount(int id) {
 		userMapper.initLoginTryCount(id);
+	}
+
+	public int getIdByUserId(String userId) {
+		Integer id = userMapper.getIdByUserId(userId);
+		if (id == null) {
+			throw new NoMatchedUserException(NO_MATCHING_USER_ID);
+		}
+		return id;
 	}
 
 	public int getPasswordDateDiff(int id) {

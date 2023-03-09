@@ -63,6 +63,12 @@
         WHERE invite_url_code = #{inviteUrlCode};
     </select>
 
+    <select id="getIdByUserId" resultType="int">
+        SELECT id
+        FROM "USER"
+        WHERE user_id = #{userId};
+    </select>
+
     <update id="modifyInviteUrlCode">
         UPDATE USER
         SET invite_url_code = #{inviteUrlCode}

@@ -21,6 +21,8 @@ public interface UserMapper {
 
 	int getPasswordDateDiff(int id);
 
+	Integer getIdByUserId(String userId);
+
 	Integer getIdByInviteCode(String inviteUrlCode);
 
 	void modifyInviteUrlCode(@Param("id") int id, @Param("inviteUrlCode") String inviteUrlCode);
