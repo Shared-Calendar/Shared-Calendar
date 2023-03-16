@@ -31,7 +31,6 @@ public class RedisService {
 		String data = getData(key);
 
 		if (data != null && data.equals(value)) {
-			deleteData(key);
 			return true;
 		}
 		return false;

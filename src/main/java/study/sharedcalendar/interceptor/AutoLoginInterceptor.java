@@ -19,8 +19,7 @@ import study.sharedcalendar.exception.NoMatchedUserException;
 public class AutoLoginInterceptor implements HandlerInterceptor {
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws
-		Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		HttpSession httpSession = request.getSession(false);
 		if (httpSession != null) {
 			Integer user = (Integer)httpSession.getAttribute(LoginConstant.SESSION_ID);
