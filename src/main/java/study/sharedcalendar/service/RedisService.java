@@ -23,6 +23,10 @@ public class RedisService {
 		stringRedisTemplate.opsForValue().set(key, value, expireDuration);
 	}
 
+	public void setData(String key, String value) {
+		stringRedisTemplate.opsForValue().set(key, value);
+	}
+
 	public boolean checkData(String key, String value) {
 		String data = getData(key);
 
