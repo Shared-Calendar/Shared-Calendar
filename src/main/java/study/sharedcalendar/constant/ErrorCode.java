@@ -27,7 +27,10 @@ public enum ErrorCode {
 
 	/* 409 CONFLICT */
 	ID_DUPLICATE(CONFLICT, "중복된 아이디입니다."),
-	EMAIL_DUPLICATE(CONFLICT, "중복된 이메일입니다.");
+	EMAIL_DUPLICATE(CONFLICT, "중복된 이메일입니다."),
+
+	/* 503 SERVICE_UNAVAILABLE */
+	GET_LOCK_FAILED(SERVICE_UNAVAILABLE, "락을 획득하지 못했습니다.");
 
 	private final HttpStatus status;
 	private final String message;

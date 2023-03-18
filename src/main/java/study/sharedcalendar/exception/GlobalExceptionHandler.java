@@ -71,4 +71,11 @@ public class GlobalExceptionHandler {
 			.status(ex.getErrorCode().getStatus())
 			.body(new ErrorResponse(ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage()));
 	}
+
+	@ExceptionHandler(ThreadException.class)
+	public ResponseEntity handleInterruptedException(ThreadException ex) {
+		return ResponseEntity
+			.status(ex.getErrorCode().getStatus())
+			.body(new ErrorResponse(ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage()));
+	}
 }
