@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.*;
 import javax.mail.MessagingException;
 import javax.validation.ConstraintViolationException;
 
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -77,5 +78,13 @@ public class GlobalExceptionHandler {
 		return ResponseEntity
 			.status(ex.getErrorCode().getStatus())
 			.body(new ErrorResponse(ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage()));
+	}
+
+	@ExceptionHandler(JdbcSQLIntegrityConstraintViolationException.class)
+	public ResponseEntity handleJdbcSQLIntegrityConstraintViolationException(
+		JdbcSQLIntegrityConstraintViolationException ex) {
+		return ResponseEntity
+			.status(BAD_REQUEST)
+			.body(new ErrorResponse(BAD_REQUEST, "일치하는 정보가 DB에 없습니다."));
 	}
 }
