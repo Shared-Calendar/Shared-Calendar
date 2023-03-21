@@ -30,7 +30,10 @@ public enum ErrorCode {
 	EMAIL_DUPLICATE(CONFLICT, "중복된 이메일입니다."),
 
 	/* 503 SERVICE_UNAVAILABLE */
-	GET_LOCK_FAILED(SERVICE_UNAVAILABLE, "락을 획득하지 못했습니다.");
+	GET_LOCK_FAILED(SERVICE_UNAVAILABLE, "락을 획득하지 못했습니다."),
+	CREATE_LIKE_FAILED(SERVICE_UNAVAILABLE, "좋아요 레코드를 생성하는데 실패했습니다."),
+	UPDATE_LIKE_FAILED(SERVICE_UNAVAILABLE, "좋아요를 추가하는 데 실패했습니다."),
+	UPDATE_UNLIKE_FAILED(SERVICE_UNAVAILABLE, "좋아요를 취소하는 데 실패했습니다.");
 
 	private final HttpStatus status;
 	private final String message;

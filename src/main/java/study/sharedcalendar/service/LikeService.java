@@ -26,6 +26,8 @@ public class LikeService {
 			createLike(userId, sharedScheduleId);
 		} else if (!isLike(userId, sharedScheduleId)) {
 			updateLike(userId, sharedScheduleId);
+		} else {
+			updateUnlike(userId, sharedScheduleId);
 		}
 	}
 
@@ -43,7 +45,7 @@ public class LikeService {
 			likeMapper.incrementLike(sharedScheduleId);
 			log.debug("좋아요 개수 증가");
 		} catch (InterruptedException e) {
-			throw new ThreadException(GET_LOCK_FAILED);
+			throw new ThreadException(CREATE_LIKE_FAILED);
 		} finally {
 			if (lock.isLocked() && lock.isHeldByCurrentThread())
 				lock.unlock();
@@ -64,7 +66,28 @@ public class LikeService {
 			likeMapper.incrementLike(sharedScheduleId);
 			log.debug("좋아요 개수 증가");
 		} catch (InterruptedException e) {
-			throw new ThreadException(GET_LOCK_FAILED);
+			throw new ThreadException(UPDATE_LIKE_FAILED);
+		} finally {
+			if (lock.isLocked() && lock.isHeldByCurrentThread())
+				lock.unlock();
+		}
+	}
+
+	@Transactional
+	public void updateUnlike(int userId, int sharedScheduleId) {
+		RLock lock = redissonClient.getLock(sharedScheduleId + " lock");
+
+		try {
+			if (!lock.tryLock(3, 3, TimeUnit.SECONDS))
+				throw new ThreadException(GET_LOCK_FAILED);
+
+			likeMapper.updateUnlike(userId, sharedScheduleId);
+			log.debug("좋아요 취소 업데이트");
+
+			likeMapper.decrementLike(sharedScheduleId);
+			log.debug("좋아요 개수 감소");
+		} catch (InterruptedException e) {
+			throw new ThreadException(UPDATE_UNLIKE_FAILED);
 		} finally {
 			if (lock.isLocked() && lock.isHeldByCurrentThread())
 				lock.unlock();
@@ -78,4 +101,5 @@ public class LikeService {
 	private boolean isLike(int userId, int sharedScheduleId) {
 		return likeMapper.isLike(userId, sharedScheduleId);
 	}
+
 }
