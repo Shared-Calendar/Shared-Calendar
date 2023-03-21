@@ -7,10 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +20,6 @@ import study.sharedcalendar.mapper.LikeMapper;
 public class LikeService {
 	private final RedissonClient redissonClient;
 	private final LikeMapper likeMapper;
-	private final PlatformTransactionManager transactionManager;
 
 	public void like(int userId, int sharedScheduleId) {
 		if (!likeExist(userId, sharedScheduleId)) {
@@ -33,10 +29,9 @@ public class LikeService {
 		}
 	}
 
+	@Transactional
 	public void createLike(int userId, int sharedScheduleId) {
 		RLock lock = redissonClient.getLock(sharedScheduleId + " lock");
-		TransactionDefinition definition = new DefaultTransactionDefinition();
-		TransactionStatus status = transactionManager.getTransaction(definition);
 
 		try {
 			if (!lock.tryLock(3, 3, TimeUnit.SECONDS))
@@ -47,13 +42,7 @@ public class LikeService {
 
 			likeMapper.incrementLike(sharedScheduleId);
 			log.debug("좋아요 개수 증가");
-
-			transactionManager.commit(status);
-			log.debug("좋아요 커밋 완료");
 		} catch (InterruptedException e) {
-			transactionManager.rollback(status);
-			log.debug("좋아요 롤백");
-
 			throw new ThreadException(GET_LOCK_FAILED);
 		} finally {
 			if (lock.isLocked() && lock.isHeldByCurrentThread())
@@ -61,10 +50,9 @@ public class LikeService {
 		}
 	}
 
+	@Transactional
 	public void updateLike(int userId, int sharedScheduleId) {
 		RLock lock = redissonClient.getLock(sharedScheduleId + " lock");
-		TransactionDefinition definition = new DefaultTransactionDefinition();
-		TransactionStatus status = transactionManager.getTransaction(definition);
 
 		try {
 			if (!lock.tryLock(3, 3, TimeUnit.SECONDS))
@@ -75,13 +63,7 @@ public class LikeService {
 
 			likeMapper.incrementLike(sharedScheduleId);
 			log.debug("좋아요 개수 증가");
-
-			transactionManager.commit(status);
-			log.debug("좋아요 커밋 완료");
 		} catch (InterruptedException e) {
-			transactionManager.rollback(status);
-			log.debug("좋아요 롤백");
-
 			throw new ThreadException(GET_LOCK_FAILED);
 		} finally {
 			if (lock.isLocked() && lock.isHeldByCurrentThread())
