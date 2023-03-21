@@ -7,11 +7,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.EnableCaching;
 
 import study.sharedcalendar.constant.ConnectionConstant;
+import study.sharedcalendar.constant.ScheduleConstant;
 import study.sharedcalendar.constant.UserConstant;
 
 @MapperScan
 @EnableCaching
-@EnableConfigurationProperties({UserConstant.class, ConnectionConstant.class})
+@EnableConfigurationProperties({UserConstant.class, ConnectionConstant.class,
+	ScheduleConstant.class})
 @SpringBootApplication
 public class SharedCalendarApplication {
 

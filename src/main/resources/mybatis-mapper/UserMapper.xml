@@ -38,7 +38,7 @@
                          password_date,
                          created_at,
                          updated_at)
-        values (#{userId},
+        VALUES (#{userId},
                 #{password},
                 #{email},
                 #{inviteUrlCode},

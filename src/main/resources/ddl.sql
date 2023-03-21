@@ -31,7 +31,7 @@ create table SHARED_SCHEDULE
     user_id      int       not null,
     connectee_id int       not null,
     content      text      not null,
-    date         timestamp null,
+    date         date      null,
     activate     tinyint   not null,
     created_at   timestamp not null default current_timestamp,
     updated_at   timestamp not null default current_timestamp on update current_timestamp,

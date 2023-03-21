@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.sharedcalendar.mapper.ScheduleMapper">
+
+    <insert id="createSchedule">
+        INSERT INTO SHARED_SCHEDULE(user_id, connectee_id, content, date, activate,
+                                    created_at, updated_at)
+        VALUES (#{userId}, #{connecteeId}, #{content}, #{date}, #{activate}, NOW(), NOW())
+    </insert>
+
+    <update id="modifySchedule">
+        UPDATE SHARED_SCHEDULE
+        SET content  = #{content},
+            date     = #{date},
+            activate = #{activate}
+        WHERE id = #{id};
+    </update>
+
+    <delete id="deleteSchedule">
+        DELETE
+        FROM SHARED_SCHEDULE
+        WHERE id = #{id};
+    </delete>
+
+    <select id="isSchedule">
+        SELECT EXISTS(
+                       SELECT *
+                       FROM SHARED_SCHEDULE
+                       WHERE id = #{id}
+                   );
+    </select>
+
+    <select id="findMonthSchedule" resultType="study.sharedcalendar.dto.Schedule">
+        SELECT id, user_id, connectee_id, content, SHARED_SCHEDULE.date, activate
+        FROM SHARED_SCHEDULE
+        WHERE (((user_id = #{userId}) AND (connectee_id = #{connecteeId})) OR
+               ((connectee_id = #{userId}) AND (user_id = #{connecteeId}))
+                   AND EXTRACT(YEAR FROM SHARED_SCHEDULE.date) = #{year}
+                   AND EXTRACT(MONTH FROM SHARED_SCHEDULE.date) = #{month})
+          AND SHARED_SCHEDULE.date
+            >= #{date}
+        ORDER BY SHARED_SCHEDULE.date ASC LIMIT 10;
+    </select>
+
+    <select id="findDaySchedule" resultType="study.sharedcalendar.dto.Schedule">
+        SELECT *
+        FROM SHARED_SCHEDULE
+        WHERE (((user_id = #{userId}) AND (connectee_id = #{connecteeId})) OR
+               ((connectee_id = #{userId}) AND (user_id = #{connecteeId})))
+          AND id
+            > #{id}
+          AND EXTRACT(YEAR FROM SHARED_SCHEDULE.date) = #{year}
+          AND EXTRACT(MONTH FROM SHARED_SCHEDULE.date) = #{month}
+          AND EXTRACT(DAY FROM SHARED_SCHEDULE.date) = #{day}
+        ORDER BY created_at ASC LIMIT 10;
+    </select>
+
+</mapper>
