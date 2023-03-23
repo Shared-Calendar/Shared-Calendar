@@ -24,6 +24,8 @@ public enum ErrorCode {
 	NO_MATCHING_CONNECTION(HttpStatus.NOT_FOUND, "친구 사이가 아닙니다."),
 	NO_CONNECT_ANYONE(HttpStatus.NOT_FOUND, "연결된 친구가 없습니다."),
 	NO_VIEW_ANYONE(HttpStatus.NOT_FOUND, "조회할 친구가 없습니다."),
+	NO_MATCHING_SCHEDULE(HttpStatus.NOT_FOUND, "일치하는 일정이 없습니다."),
+	NO_SCHEDULE_ANYMORE(HttpStatus.NOT_FOUND, "조회할 일정이 없습니다."),
 
 	/* 409 CONFLICT */
 	ID_DUPLICATE(HttpStatus.CONFLICT, "중복된 아이디입니다"),

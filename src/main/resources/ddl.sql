@@ -31,7 +31,7 @@ create table SHARED_SCHEDULE
     user_id      int       not null,
     connectee_id int       not null,
     content      text      not null,
-    date         timestamp null,
+    date         date      null,
     activate     tinyint   not null,
     created_at   timestamp not null default current_timestamp,
     updated_at   timestamp not null default current_timestamp on update current_timestamp,
@@ -51,16 +51,16 @@ create table CONNECTOR
 );
 
 alter table NOTIFICATION
-    add foreign key (user_id) references USER (id);
+    add foreign key (user_id) references USER (id) ON DELETE CASCADE;
 alter table NOTIFICATION
-    add foreign key (target_user_id) references USER (id);
+    add foreign key (target_user_id) references USER (id) ON DELETE CASCADE;
 alter table NOTIFICATION
-    add foreign key (shared_schedule_id) references SHARED_SCHEDULE (id);
+    add foreign key (shared_schedule_id) references SHARED_SCHEDULE (id) ON DELETE CASCADE;
 alter table SHARED_SCHEDULE
-    add foreign key (user_id) references USER (id);
+    add foreign key (user_id) references USER (id) ON DELETE CASCADE;
 alter table SHARED_SCHEDULE
-    add foreign key (connectee_id) references USER (id);
+    add foreign key (connectee_id) references USER (id) ON DELETE CASCADE;
 alter table CONNECTOR
-    add foreign key (connector_id) references USER (id);
+    add foreign key (connector_id) references USER (id) ON DELETE CASCADE;
 alter table CONNECTOR
-    add foreign key (connectee_id) references USER (id);
+    add foreign key (connectee_id) references USER (id) ON DELETE CASCADE;

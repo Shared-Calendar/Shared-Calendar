@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import study.sharedcalendar.dto.LoginReq;
 import study.sharedcalendar.dto.SignUpReq;
 import study.sharedcalendar.dto.User;
+import study.sharedcalendar.exception.AuthorizationException;
 import study.sharedcalendar.exception.DuplicateException;
 import study.sharedcalendar.exception.NoMatchedUserException;
 import study.sharedcalendar.mapper.UserMapper;
@@ -38,6 +39,16 @@ public class UserService {
 			.build();
 
 		userMapper.createUser(signUpSignUpReq);
+	}
+
+	public void deleteUser(LoginReq loginReq) {
+		User user = findLoginUser(loginReq);
+
+		if (!encryptionService.isMatch(loginReq.getPassword(), user.getPassword())) {
+			throw new AuthorizationException(NO_MATCHING_USER_PASSWORD);
+		}
+
+		userMapper.deleteUser(user.getId());
 	}
 
 	public void userIdDuplicationCheck(String userId) {

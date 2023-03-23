@@ -38,7 +38,7 @@
                          password_date,
                          created_at,
                          updated_at)
-        values (#{userId},
+        VALUES (#{userId},
                 #{password},
                 #{email},
                 #{inviteUrlCode},
@@ -65,7 +65,7 @@
 
     <select id="getIdByUserId" resultType="int">
         SELECT id
-        FROM "USER"
+        FROM USER
         WHERE user_id = #{userId};
     </select>
 
@@ -74,5 +74,11 @@
         SET invite_url_code = #{inviteUrlCode}
         WHERE id = #{id};
     </update>
+
+    <delete id="deleteUser">
+        DELETE
+        FROM USER
+        WHERE id = #{id};
+    </delete>
 
 </mapper>
