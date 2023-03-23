@@ -1,6 +1,6 @@
 package study.sharedcalendar.service;
 
-import static study.sharedcalendar.constant.UserConstant.*;
+import static study.sharedcalendar.constant.ConnectionConstant.*;
 
 import org.springframework.stereotype.Service;
 

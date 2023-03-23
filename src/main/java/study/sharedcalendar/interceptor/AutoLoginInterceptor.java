@@ -13,13 +13,10 @@ import org.springframework.web.servlet.ModelAndView;
 import lombok.RequiredArgsConstructor;
 import study.sharedcalendar.constant.UserConstant;
 import study.sharedcalendar.exception.NoMatchedUserException;
-import study.sharedcalendar.service.UserService;
 
 @Component
 @RequiredArgsConstructor
 public class AutoLoginInterceptor implements HandlerInterceptor {
-	private final UserService userService;
-
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 		Object handler) throws

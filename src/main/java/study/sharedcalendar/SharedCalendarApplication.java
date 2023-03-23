@@ -5,10 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+import study.sharedcalendar.constant.ConnectionConstant;
 import study.sharedcalendar.constant.UserConstant;
 
 @MapperScan
-@EnableConfigurationProperties(UserConstant.class)
+@EnableConfigurationProperties({UserConstant.class, ConnectionConstant.class})
 @SpringBootApplication
 public class SharedCalendarApplication {
 

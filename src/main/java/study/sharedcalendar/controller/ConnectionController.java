@@ -1,7 +1,9 @@
 package study.sharedcalendar.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,17 +16,17 @@ import study.sharedcalendar.service.ConnectionService;
 public class ConnectionController {
 	private final ConnectionService connectionService;
 
-	@PostMapping("/url")
+	@GetMapping
 	public String getInviteUrl() {
 		return connectionService.getInviteUrl();
 	}
 
-	@PostMapping("/change-code")
+	@PatchMapping
 	public void changeInviteUrlCode() {
 		connectionService.changeInviteCode();
 	}
 
-	@PostMapping("{connectorCode}")
+	@PutMapping("{connectorCode}")
 	public void createConnection(@PathVariable String connectorCode) {
 		connectionService.createConnection(connectorCode);
 	}
