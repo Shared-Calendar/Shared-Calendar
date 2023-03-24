@@ -20,7 +20,6 @@ public class ConnectionService {
 	private final LoginService loginService;
 	private final ConnectionMapper connectionMapper;
 	private final UserService userService;
-	private final RedisService redisService;
 
 	public String getInviteUrl() {
 		int loginId = loginService.getLoginSession();
@@ -67,28 +66,25 @@ public class ConnectionService {
 		connectionMapper.modifyActivate(connection.getId(), false);
 	}
 
-	public List<String> findConnection() {
+	public List<String> findConnection(List<String> connection) {
 		int loginId = loginService.getLoginSession();
 		if (connectionMapper.countConnection(loginId) == 0) {
 			throw new AuthorizationException(NO_CONNECT_ANYONE);
 		}
 
-		String connection = redisService.getData((CONNECTION_VIEW_REDIS_KEY + loginId));
 		int offset;
 		if (connection == null) {
 			offset = 0;
 		} else {
+			String lastConnection = connection.get(connection.size() - 1);
 			offset = connectionMapper.getConnection(loginId,
-				userService.getIdByUserId(connection)).getId();
+				userService.getIdByUserId(lastConnection)).getId();
 		}
 
 		List<String> connectionList = connectionMapper.findConnection(loginId, offset);
+
 		if (connectionList.isEmpty()) {
-			redisService.deleteData(CONNECTION_VIEW_REDIS_KEY + loginId);
 			throw new AuthorizationException(NO_VIEW_ANYONE);
-		} else {
-			redisService.setDataExpire((CONNECTION_VIEW_REDIS_KEY + loginId),
-				connectionList.get(connectionList.size() - 1), CONNECTION_VIEW_EXPIRED_TIME);
 		}
 		return connectionList;
 	}
