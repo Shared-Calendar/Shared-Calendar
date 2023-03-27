@@ -16,12 +16,12 @@ import study.sharedcalendar.service.ConnectionService;
 public class ConnectionController {
 	private final ConnectionService connectionService;
 
-	@GetMapping
+	@GetMapping("url")
 	public String getInviteUrl() {
 		return connectionService.getInviteUrl();
 	}
 
-	@PatchMapping
+	@PatchMapping("url")
 	public void changeInviteUrlCode() {
 		connectionService.changeInviteCode();
 	}
