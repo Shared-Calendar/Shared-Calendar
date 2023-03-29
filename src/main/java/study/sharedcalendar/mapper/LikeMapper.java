@@ -14,4 +14,8 @@ public interface LikeMapper {
 	void incrementLike(int sharedScheduleId);
 
 	boolean isLike(@Param("userId") int userId, @Param("sharedScheduleId") int sharedScheduleId);
+
+	void updateUnlike(@Param("userId") int userId, @Param("sharedScheduleId") int sharedScheduleId);
+
+	void decrementLike(int sharedScheduleId);
 }

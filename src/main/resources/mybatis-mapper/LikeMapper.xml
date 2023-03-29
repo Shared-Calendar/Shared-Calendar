@@ -41,6 +41,21 @@
     <select id="isLike" resultType="boolean">
         SELECT is_like
         FROM HEART
-        WHERE shared_schedule_id = #{sharedScheduleId};
+        WHERE user_id = #{userId}
+          AND shared_schedule_id = #{sharedScheduleId};
     </select>
+
+    <update id="updateUnlike">
+        UPDATE HEART
+        SET is_like = 0
+        WHERE user_id = #{userId}
+          AND shared_schedule_id = #{sharedScheduleId};
+    </update>
+
+    <update id="decrementLike">
+        UPDATE SHARED_SCHEDULE
+        SET like_count = like_count - 1
+        WHERE id = #{sharedScheduleId};
+    </update>
+
 </mapper>
