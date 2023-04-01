@@ -30,7 +30,7 @@ public class LikeService {
 		} else if (!isLike(userId, sharedScheduleId)) {
 			updateLike(userId, sharedScheduleId);
 		} else {
-			updateUnlike(userId, sharedScheduleId);
+			cancelLike(userId, sharedScheduleId);
 		}
 	}
 
@@ -89,14 +89,14 @@ public class LikeService {
 	}
 
 	@Transactional
-	public void updateUnlike(int userId, int sharedScheduleId) {
+	public void cancelLike(int userId, int sharedScheduleId) {
 		RLock lock = redissonClient.getLock(sharedScheduleId + " lock");
 
 		try {
 			if (!lock.tryLock(3, 3, TimeUnit.SECONDS))
 				throw new ThreadException(GET_LOCK_FAILED);
 
-			likeMapper.updateUnlike(userId, sharedScheduleId);
+			likeMapper.cancelLike(userId, sharedScheduleId);
 			log.debug("좋아요 취소 업데이트");
 
 			likeMapper.decrementLike(sharedScheduleId);
