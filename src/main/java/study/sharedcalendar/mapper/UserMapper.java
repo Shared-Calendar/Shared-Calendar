@@ -25,4 +25,8 @@ public interface UserMapper {
 	String findUserIdByEmail(String email);
 
 	void resetPassword(String email, String password);
+
+	boolean userExistById(int id);
+
+	User findUserById(int id);
 }

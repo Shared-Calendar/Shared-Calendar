@@ -79,4 +79,12 @@
         SET password = #{password}
         WHERE email = #{email};
     </update>
+
+    <select id="userExistById" resultType="boolean">
+        SELECT EXISTS(
+                       SELECT *
+                       FROM USER
+                       WHERE id = #{id}
+                   );
+    </select>
 </mapper>

@@ -96,4 +96,22 @@ public class UserService {
 		userMapper.resetPassword(email, encryptedPassword);
 		redisService.deleteData("pwd " + email);
 	}
+
+	private boolean userExistById(int id) {
+		if (!userMapper.userExistById(id)) {
+			throw new NoMatchedUserException(NO_MATCHING_USER_BY_ID);
+		}
+		return true;
+	}
+
+	public User findUserById(int id) {
+		User user = null;
+		if( userExistById(id)) {
+			user = userMapper.findUserById(id);
+			if( user == null) {
+				throw new NoMatchedUserException(NO_MATCHING_USER_BY_ID);
+			}
+		}
+		return user;
+	}
 }

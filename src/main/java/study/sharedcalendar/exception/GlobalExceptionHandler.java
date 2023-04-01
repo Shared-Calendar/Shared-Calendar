@@ -87,4 +87,11 @@ public class GlobalExceptionHandler {
 			.status(BAD_REQUEST)
 			.body(new ErrorResponse(BAD_REQUEST, "일치하는 정보가 DB에 없습니다."));
 	}
+
+	@ExceptionHandler(FcmException.class)
+	public ResponseEntity handleFcmException(FcmException ex) {
+		return ResponseEntity
+			.status(ex.getErrorCode().getStatus())
+			.body(new ErrorResponse(ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage()));
+	}
 }

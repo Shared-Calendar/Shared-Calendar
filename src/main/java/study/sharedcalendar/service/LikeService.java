@@ -2,6 +2,7 @@ package study.sharedcalendar.service;
 
 import static study.sharedcalendar.constant.ErrorCode.*;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.redisson.api.RLock;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import study.sharedcalendar.exception.FcmException;
 import study.sharedcalendar.exception.ThreadException;
 import study.sharedcalendar.mapper.LikeMapper;
 
@@ -20,6 +22,7 @@ import study.sharedcalendar.mapper.LikeMapper;
 public class LikeService {
 	private final RedissonClient redissonClient;
 	private final LikeMapper likeMapper;
+	private final FcmService fcmService;
 
 	public void like(int userId, int sharedScheduleId) {
 		if (!likeExist(userId, sharedScheduleId)) {
@@ -50,6 +53,12 @@ public class LikeService {
 			if (lock.isLocked() && lock.isHeldByCurrentThread())
 				lock.unlock();
 		}
+
+		try {
+			fcmService.sendLikeMessage(userId, "");
+		} catch (IOException e) {
+			throw new FcmException(FCM_ERROR);
+		}
 	}
 
 	@Transactional
@@ -70,6 +79,12 @@ public class LikeService {
 		} finally {
 			if (lock.isLocked() && lock.isHeldByCurrentThread())
 				lock.unlock();
+		}
+
+		try {
+			fcmService.sendLikeMessage(userId, "");
+		} catch (IOException e) {
+			throw new FcmException(FCM_ERROR);
 		}
 	}
 

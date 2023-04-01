@@ -11,6 +11,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파라미터 값을 확인해주세요."),
+	FCM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FCM에 예기치 않은 에러가 발생했습니다."),
 
 	/* 400 BAD REQUEST */
 	NO_MATCHING_AUTH_CODE(BAD_REQUEST, "인증코드가 일치하지 않습니다."),
@@ -24,6 +25,7 @@ public enum ErrorCode {
 	NO_MATCHING_USER_PASSWORD(NOT_FOUND, "비밀번호가 일치하지 않습니다."),
 	NO_MATCHING_USER_BY_EMAIL(NOT_FOUND, "해당 이메일로 가입된 유저가 없습니다."),
 	NO_LOGIN_INFORMATION(NOT_FOUND, "로그인 상태가 아닙니다."),
+	NO_MATCHING_USER_BY_ID(NOT_FOUND, "해당 유저는 존재하지 않습니다."),
 
 	/* 409 CONFLICT */
 	ID_DUPLICATE(CONFLICT, "중복된 아이디입니다."),
