@@ -43,22 +43,17 @@ public class LikeService {
 				throw new ThreadException(GET_LOCK_FAILED);
 
 			likeMapper.createLike(userId, sharedScheduleId);
-			log.debug("좋아요 추가");
-
 			likeMapper.incrementLike(sharedScheduleId);
-			log.debug("좋아요 개수 증가");
+			fcmService.sendLikeMessage(userId, "");
 		} catch (InterruptedException e) {
 			throw new ThreadException(CREATE_LIKE_FAILED);
+		} catch (IOException e) {
+			throw new FcmException(FCM_ERROR);
 		} finally {
 			if (lock.isLocked() && lock.isHeldByCurrentThread())
 				lock.unlock();
 		}
 
-		try {
-			fcmService.sendLikeMessage(userId, "");
-		} catch (IOException e) {
-			throw new FcmException(FCM_ERROR);
-		}
 	}
 
 	@Transactional
@@ -70,21 +65,15 @@ public class LikeService {
 				throw new ThreadException(GET_LOCK_FAILED);
 
 			likeMapper.updateLike(userId, sharedScheduleId);
-			log.debug("좋아요 업데이트");
-
 			likeMapper.incrementLike(sharedScheduleId);
-			log.debug("좋아요 개수 증가");
+			fcmService.sendLikeMessage(userId, "");
 		} catch (InterruptedException e) {
 			throw new ThreadException(UPDATE_LIKE_FAILED);
+		} catch (IOException e) {
+			throw new FcmException(FCM_ERROR);
 		} finally {
 			if (lock.isLocked() && lock.isHeldByCurrentThread())
 				lock.unlock();
-		}
-
-		try {
-			fcmService.sendLikeMessage(userId, "");
-		} catch (IOException e) {
-			throw new FcmException(FCM_ERROR);
 		}
 	}
 
@@ -97,10 +86,7 @@ public class LikeService {
 				throw new ThreadException(GET_LOCK_FAILED);
 
 			likeMapper.cancelLike(userId, sharedScheduleId);
-			log.debug("좋아요 취소 업데이트");
-
 			likeMapper.decrementLike(sharedScheduleId);
-			log.debug("좋아요 개수 감소");
 		} catch (InterruptedException e) {
 			throw new ThreadException(UPDATE_UNLIKE_FAILED);
 		} finally {

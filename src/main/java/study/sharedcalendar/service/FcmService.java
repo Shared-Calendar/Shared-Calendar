@@ -16,7 +16,6 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import lombok.RequiredArgsConstructor;
 import study.sharedcalendar.dto.FcmMessage;
@@ -40,9 +39,7 @@ public class FcmService {
 			.addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
 			.build();
 
-		Response response = client.newCall(request).execute();
-
-		System.out.println(response.body().string());
+		client.newCall(request).execute();
 	}
 
 	public void sendLikeMessage(int sender_id, String targetToken) throws IOException {
