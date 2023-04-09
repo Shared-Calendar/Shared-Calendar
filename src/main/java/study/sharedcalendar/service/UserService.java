@@ -105,13 +105,13 @@ public class UserService {
 	}
 
 	public User findUserById(int id) {
-		User user = null;
-		if( userExistById(id)) {
-			user = userMapper.findUserById(id);
-			if( user == null) {
-				throw new NoMatchedUserException(NO_MATCHING_USER_BY_ID);
-			}
+		if (!userExistById(id)) {
+			throw new NoMatchedUserException(NO_MATCHING_USER_BY_ID);
 		}
+
+		User user = userMapper.findUserById(id);
+
 		return user;
 	}
+
 }
